@@ -1,32 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles.css">
-    <title>KILNCAP</title>
-</head>
-<body>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="static/index.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-section">
+        <div class="logo-container">
+          <img src="/static/images/logo.png" alt="Kilncap Logo" class="logo">
+        </div>
+      </div>
+      <div class="right-section">
+        <h1>Welcome</h1>
+        <p>Log in to your account to continue</p>
+        <form class="login-form" onsubmit="return validateForm()"
+          action="{{ url_for('signin_button') }}" method="post">
 
-    <div class="left-half">
-        <img src="/static/images/logo.png" alt="unable to display">
+          <!-- Username Input Group -->
+          <div class="input-group">
+            <span class="icon"><img src="/static/icons/username-icon.png"
+                alt="Username Icon"></span>
+            <input type="text" id="username" name="username"
+              placeholder="Username" required>
+          </div>
+
+          <!-- Password Input Group -->
+          <div class="input-group">
+            <span class="icon"><img src="/static/icons/password-icon.png"
+                alt="Password Icon"></span>
+            <input type="password" id="password" name="password"
+              placeholder="Password" required>
+          </div>
+
+          <button type="submit">SIGN IN</button>
+        </form>
+      </div>
     </div>
 
-    <div class="right-half">
-        <div class="login-welcome"  style="text-align: center;padding:30% 20% 0%">
-            <h1 style="color: #C8A757;">Welcome</h1>
-            <h4 style="color:#032E2E">Log in to your account to continue</h4>
-        </div>
+    <script>
+      function validateForm() {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-        <div class="login-input-fields">
-            <form action="{{ url_for('signin_button') }}" method="post">
-                <input type="text" name="username" placeholder="Username" required><br>
-                <input type="password" name="password" placeholder="Password" required>
-                <img src="/static/icons/lock.png" class="lock-icon"><br>  
-                
-                <input type="submit" value="SIGN IN">
-            </form>
-        </div>
-    </div>
-</body>
+        if (!username || !password) {
+          alert("Both fields must be filled out.");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
 </html>
