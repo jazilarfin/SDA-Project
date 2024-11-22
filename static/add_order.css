@@ -1,0 +1,98 @@
+.form-container {
+    /* background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(1, 1, 1, 1);
+    max-width: 800px;
+    padding: 20px;
+    margin: 20px auto;
+    margin-top: 87px; 
+    padding-bottom: 50px; 
+    overflow-y: auto;   
+    position: absolute;
+    top: 60px; 
+    left: 250px;
+    right: 0;
+    bottom: 50px;
+    padding-left: 20px;
+    padding-right: 20px; */
+
+    width: auto;
+}
+
+.custom-width {
+    max-width: 1200px; /* Adjust percentage as needed */
+}
+
+.mb-4{
+    width: 900px;
+}
+
+.card{
+    width: 900px;
+   
+    display: block;
+    
+}
+
+/* .section {
+   
+    margin: 50px;
+    padding: 20px;
+    border: 1px solid #007B7B;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 1200px;
+} */
+
+.section h3 {
+    margin-bottom: 15px;
+    color: #007B7B;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: #007B7B;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #005959;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 10px;
+    }
+
+    .section h3 {
+        font-size: 1.3rem;
+    }
+}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <!-- <link rel="stylesheet" href="static/add_orders.css">     -->
+    <title>Order Details</title>
+{% endblock %}
+
+{% block mainheading %}
+    Order Details
+{% endblock %}
+
+{% block maincontent %}
+<div class="d-flex flex-column gap-4">
+    <!-- Customer Details Section -->
+    <div class="card mb-4" >
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Customer Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <!-- <p class="form-control-plaintext">{{ order.customer_name }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.customer_name }}" disabled>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contact</label>
+                <!-- <p class="form-control-plaintext">{{ order.contact }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.contact }}" disabled>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <!-- <p class="form-control-plaintext">{{ order.address }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.address }}" disabled>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Transportation Details Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Transportation Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Vehicle Registration Number</label>
+                <!-- <p class="form-control-plaintext">{{ order.vehicle_reg_number }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.vehicle_reg_number }}" disabled>
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Vehicle Rent</label>
+                <!-- <p class="form-control-plaintext">{{ order.vehicle_rent }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.vehicle_rent }}" disabled>
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Labor Cost</label>
+                <!-- <p class="form-control-plaintext">{{ order.labor_cost }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.labor_cost }}" disabled>
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Salesman Name</label>
+                <!-- <p class="form-control-plaintext">{{ order.salesman_name }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ order.salesman_name }}" disabled>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Details Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Item Details</h5>
+        </div>
+        <div class="card-body">
+            {% for item in order.items %}
+            <div class="mb-3">
+                <h5>Item {{ loop.index }}</h5>
+                <div class="mb-3">
+                    <label class="form-label">Brick Type</label>
+                    <!-- <p class="form-control-plaintext">{{ item.brick_type }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ item.brick_type }}" disabled>
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <!-- <p class="form-control-plaintext">{{ item.brand }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ item.brand }}" disabled>
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <!-- <p class="form-control-plaintext">{{ item.quantity }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ item.quantity }}" disabled>
+                    
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <!-- <p class="form-control-plaintext">{{ item.price }}</p> -->
+                <input type="text" id="customer_name" class="form-control" value="{{ item.price }}" disabled>
+
+                </div>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="text-center" style=" padding-bottom: 50px;  ">
+    <button type="button" class="btn btn-danger" style="width: 200px;">Edit</button>
+</div>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <link rel="stylesheet" href="static/add_orders.css">
+    <title>Add Order</title>
+{% endblock %}
+
+{% block mainheading %}
+    Add New Order
+{% endblock %}
+
+{% block maincontent %}
+<div class="container mt-4" >
+    <form action="{{ url_for('add_order') }}" method="POST">
+        
+        <!-- Customer Details Section -->
+        <div class="card mb-4" style="width: 1200px;" >
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Customer Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="customer_name" class="form-label">Name</label>
+                    <input type="text" name="customer_name" id="customer_name" class="form-control" placeholder="Enter customer name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contact" class="form-label">Contact</label>
+                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter contact number" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea name="address" id="address" class="form-control" placeholder="Enter customer address" required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transportation Details Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Transportation Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="vehicle_reg_number" class="form-label">Vehicle Registration Number</label>
+                    <input type="text" name="vehicle_reg_number" id="vehicle_reg_number" class="form-control" placeholder="Enter vehicle reg number" required>
+                </div>
+                <div class="mb-3">
+                    <label for="vehicle_rent" class="form-label">Vehicle Rent</label>
+                    <input type="number" name="vehicle_rent" id="vehicle_rent" class="form-control" placeholder="Enter vehicle rent" required>
+                </div>
+                <div class="mb-3">
+                    <label for="labor_cost" class="form-label">Labor Cost</label>
+                    <input type="number" name="labor_cost" id="labor_cost" class="form-control" placeholder="Enter labor cost" required>
+                </div>
+                <div class="mb-3">
+                    <label for="salesman_name" class="form-label">Salesman Name</label>
+                    <input type="text" name="salesman_name" id="salesman_name" class="form-control" placeholder="Enter salesman name" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item Details Section -->
+        <div class="section card mb-4" id="item-details-container">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Item Details</h5>
+            </div>
+            <div class="item-details card-body" id="item-details-template">
+                <h5>Item 1</h5>
+                <div class="mb-3">
+                    <label for="brick_type_1" class="form-label">Brick Type</label>
+                    <input type="text" name="brick_type" id="brick_type" class="form-control" placeholder="Enter brick type" required>
+                </div>
+                <div class="mb-3">
+                    <label for="brand_1" class="form-label">Brand</label>
+                    <input type="text" name="brand" id="brand" class="form-control" placeholder="Enter brand" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity_1" class="form-label">Quantity</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control" placeholder="Enter quantity" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price_1" class="form-label">Price</label>
+                    <input type="number" name="price" id="price" class="form-control" placeholder="Enter price" required>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <button type="button" class="btn btn-secondary" id="add-item-btn">Add More Items</button>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end" style="padding-bottom: 50px;">
+            <!-- <button type="submit" class="btn btn-danger" >Cancel</button> -->
+            <button type="submit" class="btn btn-success" >Add Order</button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addItemButton = document.getElementById('add-item-btn');
+        const itemDetailsContainer = document.getElementById('item-details-container');
+        let itemCount = 1; // Start with the first item
+
+        addItemButton.addEventListener('click', function () {
+            
+             // Validate existing item containers
+            const allItemContainers = itemDetailsContainer.querySelectorAll('.item-details');
+            let isValid = true;
+
+            allItemContainers.forEach((item) => {
+                const inputs = item.querySelectorAll('input');
+                inputs.forEach((input) => {
+                    if (!input.value.trim()) {
+                        input.classList.add('is-invalid'); // Add Bootstrap's validation class
+                        isValid = false;
+                    } else {
+                        input.classList.remove('is-invalid'); // Remove invalid class if filled
+                    }
+                });
+            });
+
+            if (!isValid) {
+                alert("Please fill out all fields in the current items before adding a new one.");
+                return; // Exit the function if validation fails
+            }
+
+            itemCount++; // Increment the item count
+            const newItemDetails = document.createElement('div');
+            newItemDetails.classList.add('row', 'mt-2', 'ms-2');
+            newItemDetails.innerHTML = `
+                <div class="item-details">
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Item ${itemCount}</h5>
+                        <button type="button" class="btn btn-danger btn-sm delete-item-btn me-3">Delete Item</button>
+                    </div>
+                    <div class="mb-3">
+                        <label for="brick_type_${itemCount}" class="form-label">Brick Type</label>
+                        <input type="text" name="brick_type_${itemCount}" id="brick_type" class="form-control" placeholder="Enter brick type" required style="width: 1165px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="brand_${itemCount}" class="form-label">Brand</label>
+                        <input type="text" name="brand_${itemCount}" id="brand" class="form-control" placeholder="Enter brand" required style="width: 1165px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity_${itemCount}" class="form-label">Quantity</label>
+                        <input type="number" name="quantity_${itemCount}" id="quantity" class="form-control" placeholder="Enter quantity" required style="width: 1165px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="price_${itemCount}" class="form-label">Price</label>
+                        <input type="number" name="price_${itemCount}" id="price" class="form-control" placeholder="Enter price" required style="width: 1165px;">
+                    </div>
+                </div>
+            `;
+            itemDetailsContainer.appendChild(newItemDetails);
+        });
+
+        // Delete button functionality
+        itemDetailsContainer.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('delete-item-btn')) {
+                const itemDetails = e.target.closest('.item-details');
+                itemDetails.remove(); // Remove the specific item details
+                updateItemHeadings(); // Update headings to maintain proper numbering
+            }
+        });
+
+        // Update item headings after deletion
+        function updateItemHeadings() {
+            const items = document.querySelectorAll('.item-details h5');
+            items.forEach((heading, index) => {
+                heading.textContent = `Item ${index + 1}`;
+            });
+            itemCount = items.length; // Reset the item count to the current number of items
+        }
+    });
+</script>
+{% endblock %}
+

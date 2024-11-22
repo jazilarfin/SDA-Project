@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <link rel="stylesheet" href="static/orders.css">
+    <title>Orders</title>
+{% endblock %}
+
+{% block mainheading %}
+                
+Orders Directory
+{% endblock %}
+
+{% block maincontent %}
+    <div>
+        <table style="padding-left: 5.5%;">
+            <form action="{{ url_for('orders_list_buttons') }}" method="post">
+                <td style="width:40%; padding-left: 85px;"><input type="text" placeholder="Search Order" style="width: 100%;"></td>
+                <td style="width:10%;padding-left: 30px;padding-top:15px">
+                    <button class="styled-button" name="button" value="filter_order"> 
+                        <img src="/static/icons/filter-icon.png" alt="Icon" class="button-icon"> 
+                        Filter
+                    </button>
+                </td>
+                <td style="padding-left: 380px;padding-top:15px">
+                    <button class="styled-button" name="button" value="add_order"> 
+                        <img src="/static/icons/add-icon.png" alt="Icon" class="button-icon"> 
+                        <div style="color:#007B7B">Add Order</div>
+                    </button>
+                </td>
+            </form>
+        </table>
+
+        <!-- <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order_ID</th>
+                    <th>Customer Name</th>
+                    <th>Date</th>
+                    <th>Delivery Location</th>
+                    <th>Sale Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer_name }}</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.delivery_location }}</td>
+                    <td>{{ order.sale_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> -->
+
+        <!-- Orders Table -->
+    <div style="padding: 5.5%;">
+        
+        <table class="styled-table" style="padding-left: 20px; width: 100%; border-collapse: separate; border-spacing: 0 10px;" >
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Address</th>
+                    <th>Date</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr data-url="{{ url_for('order_details', order_id=order.id) }}" onclick="redirectToDetails(this)" style="cursor: pointer;">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer_name }}</td>
+                    <td>{{ order.address }}</td>
+                    <td>{{ order.date.strftime('%Y-%m-%d') }}</td>
+                    <td>
+                        {% set total_quantity = 0 %}
+                        {% for item in order.items %}
+                            {% set total_quantity = total_quantity + item.quantity %}
+                        {% endfor %}
+                        {{ total_quantity }}
+                    </td>
+                </tr>
+
+                
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        {% if pagination.has_prev %}
+        <a href="{{ url_for('orders', page=pagination.prev_num) }}">Previous</a>
+        {% endif %}
+    
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+    
+        {% if pagination.has_next %}
+        <a href="{{ url_for('orders', page=pagination.next_num) }}">Next</a>
+        {% endif %}
+    </div>
+    
+        
+    </div>
+
+    <script>
+        function redirectToDetails(row) {
+            const url = row.getAttribute('data-url');
+            window.location.href = url;
+        }
+    </script>
+    
+
+{% endblock %}
