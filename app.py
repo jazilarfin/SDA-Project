@@ -81,6 +81,19 @@ class Vehicle(db.Model):
 
     def __repr__(self):
         return f"<Vehicle {self.registration_no}: {self.vehicle_type}, {self.capacity}kg, {self.ownership_status}>"
+    
+# Salesman Model
+class Salesman(db.Model):
+    __tablename__ = 'salesmen'
+
+    id = db.Column(db.Integer, primary_key=True)  # Salesman ID (Primary Key)
+    name = db.Column(db.String(100), nullable=False)  # Salesman's name
+    contact_no = db.Column(db.String(15), unique=True, nullable=False)  # Salesman's contact number
+    cnic = db.Column(db.String(15), unique=True, nullable=False)  # Salesman's CNIC (Computerized National Identity Card)
+
+    def __repr__(self):
+        return f"<Salesman {self.name}: Contact No. {self.contact_no}, CNIC {self.cnic}>"
+
 
 @app.route('/')
 def home():
@@ -171,42 +184,44 @@ def add_order():
     return render_template('add_order.html')
 
 
-
+# Route to handle button clicks for the vehicle list page
 @app.route('/vehicle_list_buttons', methods=['POST'])
 def vehicle_list_buttons():
-    button_value = request.form.get('button')
-    if button_value == 'add_vehicle':
-        return redirect(url_for('add_vehicle'))
-    return redirect(url_for('vehicle'))
+    button_value = request.form.get('button')  # Get the value of the button clicked from the form
+    if button_value == 'add_vehicle':  # If the "add_vehicle" button was clicked
+        return redirect(url_for('add_vehicle'))  # Redirect to the "add_vehicle" route
+    return redirect(url_for('vehicle'))  # If another button was clicked, redirect to the vehicle list page
 
-
-
+# Route to display the vehicle list page with pagination
 @app.route('/vehicle', methods=['GET'])
 def vehicle():
-    page = request.args.get('page', 1, type=int)  # Get the current page number for pagination
-    per_page = 5  # Number of vehicles per page
-    vehicles_paginated = Vehicle.query.paginate(page=page, per_page=per_page)
+    page = request.args.get('page', 1, type=int)  # Get the current page number from the URL query parameter
+    per_page = 5  # Number of vehicles to display per page
+    vehicles_paginated = Vehicle.query.paginate(page=page, per_page=per_page)  # Query the vehicles with pagination
 
+    # Render the vehicle list template and pass the paginated vehicles and pagination data
     return render_template('vehicle.html', vehicles=vehicles_paginated.items, pagination=vehicles_paginated)
 
+# Route to display the details of a specific vehicle
 @app.route('/vehicle/<int:vehicle_id>', methods=['GET'])
 def vehicle_details(vehicle_id):
-    # Fetch the vehicle by ID
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
+    vehicle = Vehicle.query.get_or_404(vehicle_id)  # Fetch the vehicle by ID or return 404 if not found
     
-    # Render a detailed view of the vehicle
+    # Render the vehicle details template and pass the fetched vehicle data
     return render_template('vehicle_details.html', vehicle=vehicle)
 
-
+# Route to handle adding a new vehicle (GET for form, POST for submission)
 @app.route('/add_vehicle', methods=['GET', 'POST'])
 def add_vehicle():
-    if request.method == 'POST':
+    if request.method == 'POST':  # If the form is submitted (POST request)
         try:
+            # Get form data for the new vehicle
             registration_no = request.form['vehicle_reg_number']
             vehicle_type = request.form['vehicle_type']
-            capacity = int(request.form['vehicle_capacity'])
+            capacity = int(request.form['vehicle_capacity'])  # Convert capacity to integer
             ownership_status = request.form['ownership_status']
 
+            # Create a new Vehicle instance with the provided data
             new_vehicle = Vehicle(
                 registration_no=registration_no,
                 vehicle_type=vehicle_type,
@@ -214,48 +229,128 @@ def add_vehicle():
                 ownership_status=ownership_status
             )
 
+            # Add the new vehicle to the database and commit the transaction
             db.session.add(new_vehicle)
             db.session.commit()
 
-            flash("Vehicle added successfully!", "success")
-            return redirect(url_for('vehicle'))
+            flash("Vehicle added successfully!", "success")  # Flash a success message
+            return redirect(url_for('vehicle'))  # Redirect to the vehicle list page
 
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Error adding vehicle: {e}", "danger")
-            return render_template('add_vehicle.html')
+        except Exception as e:  # If there's an error while adding the vehicle
+            db.session.rollback()  # Rollback the database transaction
+            flash(f"Error adding vehicle: {e}", "danger")  # Flash an error message
+            return render_template('add_vehicle.html')  # Return the add vehicle form with error message
 
-    return render_template('add_vehicle.html')
+    return render_template('add_vehicle.html')  # Render the form to add a vehicle (GET request)
 
-
+# Route to handle editing a specific vehicle (GET for form, POST for submission)
 @app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
 def edit_vehicle(vehicle_id):
-    # Fetch the vehicle or return a 404 error if it doesn't exist
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
+    vehicle = Vehicle.query.get_or_404(vehicle_id)  # Fetch the vehicle by ID or return 404 if not found
 
-    if request.method == 'POST':
+    if request.method == 'POST':  # If the form is submitted (POST request)
         try:
-            # Update vehicle details from the form
+            # Update the vehicle details with the form data
             vehicle.registration_no = request.form['vehicle_reg_number']
             vehicle.vehicle_type = request.form['vehicle_type']
-            vehicle.capacity = int(request.form['vehicle_capacity'])
+            vehicle.capacity = int(request.form['vehicle_capacity'])  # Convert capacity to integer
             vehicle.ownership_status = request.form['ownership_status']
 
-            # Save changes to the database
+            # Commit the changes to the database
             db.session.commit()
 
-            # Redirect to vehicle details after successful edit
-            flash("Vehicle updated successfully!", "success")
-            return redirect(url_for('vehicle_details', vehicle_id=vehicle.id))
-        except Exception as e:
-            db.session.rollback()
-            flash(f"Error updating vehicle: {e}", "danger")
+            flash("Vehicle updated successfully!", "success")  # Flash a success message
+            return redirect(url_for('vehicle_details', vehicle_id=vehicle.id))  # Redirect to the vehicle details page
 
-    # Render the edit form with the current vehicle data for a GET request
+        except Exception as e:  # If there's an error while updating the vehicle
+            db.session.rollback()  # Rollback the database transaction
+            flash(f"Error updating vehicle: {e}", "danger")  # Flash an error message
+
+    # Render the form to edit the vehicle with the existing data for a GET request
     return render_template('edit_vehicle.html', vehicle=vehicle)
 
 
+# Route to handle button clicks for the salesman list page
+@app.route('/salesman_list_buttons', methods=['POST'])
+def salesman_list_buttons():
+    button_value = request.form.get('button')  # Get the value of the button clicked from the form
+    if button_value == 'add_salesman':  # If the "add_salesman" button was clicked
+        return redirect(url_for('add_salesman'))  # Redirect to the "add_salesman" route
+    return redirect(url_for('salesman'))  # If another button was clicked, redirect to the salesman list page
 
+# Route to display the salesman list page with pagination
+@app.route('/salesman', methods=['GET'])
+def salesman():
+    page = request.args.get('page', 1, type=int)  # Get the current page number from the URL query parameter
+    per_page = 5  # Number of salesmen to display per page
+    salesmen_paginated = Salesman.query.paginate(page=page, per_page=per_page)  # Query the salesmen with pagination
+
+    # Render the salesman list template and pass the paginated salesmen and pagination data
+    return render_template('salesman.html', salesmen=salesmen_paginated.items, pagination=salesmen_paginated)
+
+# Route to display the details of a specific salesman
+@app.route('/salesman/<int:salesman_id>', methods=['GET'])
+def salesman_details(salesman_id):
+    salesman = Salesman.query.get_or_404(salesman_id)  # Fetch the salesman by ID or return 404 if not found
+    
+    # Render the salesman details template and pass the fetched salesman data
+    return render_template('salesman_details.html', salesman=salesman)
+
+# Route to handle adding a new salesman (GET for form, POST for submission)
+@app.route('/add_salesman', methods=['GET', 'POST'])
+def add_salesman():
+    if request.method == 'POST':  # If the form is submitted (POST request)
+        try:
+            # Get form data for the new salesman
+            name = request.form['salesman_name']
+            contact = request.form['salesman_contact']
+            cnic = request.form['salesman_cnic']
+
+            # Create a new Salesman instance with the provided data
+            new_salesman = Salesman(
+                name=name,
+                contact_no=contact,
+                cnic=cnic
+            )
+
+            # Add the new salesman to the database and commit the transaction
+            db.session.add(new_salesman)
+            db.session.commit()
+
+            flash("Salesman added successfully!", "success")  # Flash a success message
+            return redirect(url_for('salesman'))  # Redirect to the salesman list page
+
+        except Exception as e:  # If there's an error while adding the salesman
+            db.session.rollback()  # Rollback the database transaction
+            flash(f"Error adding salesman: {e}", "danger")  # Flash an error message
+            return render_template('add_salesman.html')  # Return the add salesman form with error message
+
+    return render_template('add_salesman.html')  # Render the form to add a salesman (GET request)
+
+# Route to handle editing a specific salesman (GET for form, POST for submission)
+@app.route('/edit_salesman/<int:salesman_id>', methods=['GET', 'POST'])
+def edit_salesman(salesman_id):
+    salesman = Salesman.query.get_or_404(salesman_id)  # Fetch the salesman by ID or return 404 if not found
+
+    if request.method == 'POST':  # If the form is submitted (POST request)
+        try:
+            # Update the salesman details with the form data
+            salesman.name = request.form['salesman_name']
+            salesman.contact_no = request.form['salesman_contact']
+            salesman.cnic = request.form['salesman_cnic']
+
+            # Commit the changes to the database
+            db.session.commit()
+
+            flash("Salesman updated successfully!", "success")  # Flash a success message
+            return redirect(url_for('salesman_details', salesman_id=salesman.id))  # Redirect to the salesman details page
+
+        except Exception as e:  # If there's an error while updating the salesman
+            db.session.rollback()  # Rollback the database transaction
+            flash(f"Error updating salesman: {e}", "danger")  # Flash an error message
+
+    # Render the form to edit the salesman with the existing data for a GET request
+    return render_template('edit_salesman.html', salesman=salesman)
 
 @app.route('/brand_list_buttons', methods=['POST'])
 def brand_list_buttons():

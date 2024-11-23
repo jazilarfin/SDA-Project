@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Edit Salesman</title>
+{% endblock %}
+
+{% block mainheading %}
+Edit Salesman
+{% endblock %}
+
+{% block maincontent %}
+<!-- Bootstrap Navigation Bar -->
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 925px;">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('salesman') }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease; text-decoration: none;"
+                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Salesmen</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('salesman_details', salesman_id=salesman.id) }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; text-decoration: none;">Salesman
+                        Details</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; text-decoration: none;">Edit
+                        Salesman</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <form action="{{ url_for('edit_salesman', salesman_id=salesman.id) }}"
+        method="POST">
+
+        <!-- Salesman Details Section -->
+        <div class="card mb-4" style="width: 900px;">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="salesman_name" class="form-label"
+                        style="margin-bottom: 5px;">Salesman Name</label>
+                    <input type="text" name="salesman_name" id="salesman_name"
+                        class="form-control"
+                        placeholder="Enter salesman name" required
+                        value="{{ salesman.name }}"
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                    <style>
+                        #salesman_name::placeholder {
+                            color: #D4D4D4;
+                        }
+                    </style>
+                </div>
+                <div class="mb-3">
+                    <label for="salesman_contact" class="form-label"
+                        style="margin-bottom: 5px;">Contact Number</label>
+                    <input type="text" name="salesman_contact"
+                        id="salesman_contact" class="form-control"
+                        placeholder="Enter contact number" required
+                        value="{{ salesman.contact_no }}"
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                    <style>
+                        #salesman_contact::placeholder {
+                            color: #D4D4D4;
+                        }
+                    </style>
+                </div>
+                <div class="mb-3">
+                    <label for="salesman_cnic" class="form-label"
+                        style="margin-bottom: 5px;">CNIC</label>
+                    <input type="text" name="salesman_cnic" id="salesman_cnic"
+                        class="form-control"
+                        placeholder="Enter CNIC" required
+                        value="{{ salesman.cnic }}"
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                    <style>
+                        #salesman_cnic::placeholder {
+                            color: #D4D4D4;
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end" style="padding-bottom: 50px;">
+            <a href="{{ url_for('salesman_details', salesman_id=salesman.id) }}"
+                class="btn btn-danger" style="width: 150px;">Cancel</a>
+            <button type="submit" class="btn btn-success"
+                style="width: 150px;">Update</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
