@@ -109,7 +109,9 @@
     </div>
 </div>
 <div class="text-center" style=" padding-bottom: 50px;  ">
-    <button type="button" class="btn btn-danger" style="width: 200px;">Edit</button>
+    <!-- <button type="button" class="btn btn-danger" style="width: 200px;">Edit</button> -->
+    <a href="{{ url_for('edit_order', order_id=order.id) }}" class="btn btn-warning">Edit Order</a>
+    
 </div>
 
 {% endblock %}

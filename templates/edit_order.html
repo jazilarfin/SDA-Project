@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Edit Order</title>
+{% endblock %}
+
+{% block mainheading %}
+    Edit Order
+{% endblock %}
+
+{% block maincontent %}
+<div class="container mt-4">
+    <form action="{{ url_for('edit_order', order_id=order.id) }}" method="POST">
+        
+        <!-- Customer Details Section -->
+        <div class="card mb-4" style="width: 1200px;">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Customer Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="customer_name" class="form-label">Name</label>
+                    <input type="text" name="customer_name" id="customer_name" class="form-control" 
+                           value="{{ order.customer_name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contact" class="form-label">Contact</label>
+                    <input type="text" name="contact" id="contact" class="form-control" 
+                           value="{{ order.contact }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea name="address" id="address" class="form-control" required>{{ order.address }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transportation Details Section -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Transportation Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="vehicle_reg_number" class="form-label">Vehicle Registration Number</label>
+                    <input type="text" name="vehicle_reg_number" id="vehicle_reg_number" class="form-control" 
+                           value="{{ order.vehicle_reg_number }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="vehicle_rent" class="form-label">Vehicle Rent</label>
+                    <input type="number" name="vehicle_rent" id="vehicle_rent" class="form-control" 
+                           value="{{ order.vehicle_rent }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="labor_cost" class="form-label">Labor Cost</label>
+                    <input type="number" name="labor_cost" id="labor_cost" class="form-control" 
+                           value="{{ order.labor_cost }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="salesman_name" class="form-label">Salesman Name</label>
+                    <input type="text" name="salesman_name" id="salesman_name" class="form-control" 
+                           value="{{ order.salesman_name }}" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Item Details Section -->
+        <div class="section card mb-4" id="item-details-container">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Item Details</h5>
+            </div>
+            <div class="card-body">
+                {% for item in order.items %}
+                <div class="item-details mb-4">
+                    <h5>Item {{ loop.index }}</h5>
+                    <div class="mb-3">
+                        <label for="brick_type_{{ loop.index }}" class="form-label">Brick Type</label>
+                        <input type="text" name="brick_type_{{ loop.index }}" id="brick_type_{{ loop.index }}" 
+                               class="form-control" value="{{ item.brick_type }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="brand_{{ loop.index }}" class="form-label">Brand</label>
+                        <input type="text" name="brand_{{ loop.index }}" id="brand_{{ loop.index }}" 
+                               class="form-control" value="{{ item.brand }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity_{{ loop.index }}" class="form-label">Quantity</label>
+                        <input type="number" name="quantity_{{ loop.index }}" id="quantity_{{ loop.index }}" 
+                               class="form-control" value="{{ item.quantity }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price_{{ loop.index }}" class="form-label">Price</label>
+                        <input type="number" name="price_{{ loop.index }}" id="price_{{ loop.index }}" 
+                               class="form-control" value="{{ item.price }}" required>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end" style="padding-bottom: 50px;">
+            <button type="submit" class="btn btn-success">Save Changes</button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

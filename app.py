@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 
-
+app.secret_key = os.urandom(24)
 app.secret_key = 'SDA'
 
 
@@ -120,14 +120,59 @@ def orders_list_buttons():
 def orders():
     page = request.args.get('page', 1, type=int)  # Get the current page number, default is 1
     per_page = 5  # Number of orders per page
-    orders_paginated = Order.query.paginate(page=page, per_page=per_page)
+    # orders_paginated = Order.query.paginate(page=page, per_page=per_page)
+
+    orders_paginated = Order.query.order_by(Order.date.desc()).paginate(page=page, per_page=per_page)
 
     return render_template('orders.html', orders=orders_paginated.items, pagination=orders_paginated)
+
+
 
 @app.route('/order/<int:order_id>', methods=['GET'])
 def order_details(order_id):
     order = Order.query.get_or_404(order_id)
     return render_template('order_details.html', order=order)
+
+
+@app.route('/edit_order/<int:order_id>', methods=['GET'])
+def edit_order(order_id):
+    order = Order.query.get(order_id)  # Fetch the order by ID
+    if not order:
+        flash('Order not found!', 'danger')
+        return redirect(url_for('orders'))
+    return render_template('edit_order.html', order=order)
+
+
+@app.route('/edit_order/<int:order_id>', methods=['POST'])
+def edit_order_submit(order_id):
+    order = Order.query.get(order_id)
+    if not order:
+        flash('Order not found!', 'danger')
+        return redirect(url_for('orders'))
+
+    # Update order details
+    order.customer_name = request.form['customer_name']
+    order.contact = request.form['contact']
+    order.address = request.form['address']
+    order.vehicle_reg_number = request.form['vehicle_reg_number']
+    order.vehicle_rent = request.form['vehicle_rent']
+    order.labor_cost = request.form['labor_cost']
+    order.salesman_name = request.form['salesman_name']
+
+    # Update item details
+    for i, item in enumerate(order.items, start=1):
+        item.brick_type = request.form[f'brick_type_{i}']
+        item.brand = request.form[f'brand_{i}']
+        item.quantity = request.form[f'quantity_{i}']
+        item.price = request.form[f'price_{i}']
+
+    db.session.commit()
+    flash('Order updated successfully!', 'success')
+    return redirect(url_for('orders'))
+
+
+
+
 
 @app.route('/add_order', methods=['GET', 'POST'])
 def add_order():
@@ -182,6 +227,10 @@ def add_order():
             return render_template('add_order.html')
 
     return render_template('add_order.html')
+
+
+
+
 
 
 # Route to handle button clicks for the vehicle list page
