@@ -1,14 +1,39 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>Brand</title>
+<link rel="stylesheet" href="static/brand.css">
+<title>Brand Directory</title>
 {% endblock %}
-
 
 {% block mainheading %}
-                
-Brand
+Vehicles Directory
 {% endblock %}
+
 {% block maincontent %}
-this is brand
+<div>
+    <table style="padding-left: 5.5%;">
+        <form action="{{ url_for('brand_list_buttons') }}" method="post">
+            <td style="width:40%; padding-left: 85px;">
+                <input type="text" placeholder="Search Brand"
+                    style="width: 100%;">
+            </td>
+            <td style="width:10%;padding-left: 30px;padding-top:15px">
+                <button class="styled-button" name="button"
+                    value="filter_Brand">
+                    <img src="/static/icons/filter-icon.png" alt="Icon"
+                        class="button-icon">
+                    Filter
+                </button>
+            </td>
+            <td style="padding-left: 380px;padding-top:15px">
+                <button class="styled-button" name="button" value="add_brand">
+                    <img src="/static/icons/add-icon.png" alt="Icon"
+                        class="button-icon">
+                    <div style="color:#007B7B">Add Brand</div>
+                </button>
+            </td>
+        </form>
+    </table>
+</div>
+
 {% endblock %}

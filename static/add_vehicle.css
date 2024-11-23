@@ -1,0 +1,46 @@
+/* Center the form and make it wider */
+#addVehicleForm {
+  max-width: 1800px; /* Double the original width */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px; /* Add some padding for aesthetics */
+  background-color: #fff; /* Optional: white background for contrast */
+  border: 1px solid #ccc; /* Optional: subtle border */
+  border-radius: 8px; /* Optional: rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+}
+
+/* Make input fields take full width */
+#addVehicleForm .form-control {
+  width: 100%;
+  height: 45px; /* Make input fields a bit taller */
+  font-size: 16px; /* Increase font size for better readability */
+}
+
+/* Buttons styling */
+#addVehicleForm .btn {
+  width: 48%; /* Keep buttons proportional */
+  height: 50px; /* Increase button height */
+  font-size: 16px; /* Make text larger */
+  margin: 0 1%; /* Add some space between buttons */
+}
+
+/* Align buttons below the form in a row */
+#addVehicleForm .form-actions {
+  display: flex;
+  justify-content: center; /* Center the buttons */
+  gap: 15px; /* Add spacing between buttons */
+  margin-top: 20px; /* Add space between form fields and buttons */
+}
+
+/* Styling the select dropdown */
+#addVehicleForm .form-select {
+  width: 100%;
+  height: 45px; /* Match the input field height */
+  font-size: 16px; /* Match the input field font size */
+}
+
+/* Add space between fields */
+#addVehicleForm .mb-3 {
+  margin-bottom: 20px;
+}

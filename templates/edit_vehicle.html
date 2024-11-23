@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Edit Vehicle</title>
+{% endblock %}
+
+{% block mainheading %}
+Edit Vehicle
+{% endblock %}
+
+{% block maincontent %}
+<!-- Bootstrap Navigation Bar -->
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 925px;">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('vehicle') }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease; text-decoration: none;"
+                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Vehicles</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('vehicle_details', vehicle_id=vehicle.id) }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; text-decoration: none;">Vehicle
+                        Details</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; text-decoration: none;">Edit
+                        Vehicle</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <form action="{{ url_for('edit_vehicle', vehicle_id=vehicle.id) }}"
+        method="POST">
+
+        <!-- Vehicle Details Section -->
+        <div class="card mb-4" style="width: 900px;">
+
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="vehicle_reg_number" class="form-label"
+                        style="margin-bottom: 5px;">Vehicle Registration
+                        Number</label>
+                    <input type="text" name="vehicle_reg_number"
+                        id="vehicle_reg_number" class="form-control"
+                        placeholder="Enter vehicle registration number" required
+                        value="{{ vehicle.registration_no }}"
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                    <style>
+                        #vehicle_reg_number::placeholder {
+                            color: #D4D4D4;
+                        }
+                    </style>
+                </div>
+                <div class="mb-3">
+                    <label for="vehicle_type" class="form-label"
+                        style="margin-bottom: 5px;">Vehicle Type</label>
+                    <input type="text" name="vehicle_type" id="vehicle_type"
+                        class="form-control" placeholder="Enter vehicle type"
+                        required value="{{ vehicle.vehicle_type }}"
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                    <style>
+                        #vehicle_type::placeholder {
+                            color: #D4D4D4;
+                        }
+                    </style>
+                </div>
+                <div class="mb-3">
+                    <label for="vehicle_capacity" class="form-label"
+                        style="margin-bottom: 5px;">Capacity (Kgs)</label>
+                    <input type="number" name="vehicle_capacity"
+                        id="vehicle_capacity" class="form-control"
+                        placeholder="Enter vehicle capacity in Kgs" required
+                        value="{{ vehicle.capacity }}"
+                        style="border-color: #d0c7c7;">
+                    <style>
+                        #vehicle_capacity::placeholder {
+                            color: #D4D4D4;
+                        }
+                    </style>
+                </div>
+
+                <div class="mb-3">
+                    <label for="ownership_status" class="form-label"
+                        style="margin-bottom: 5px;">Ownership Status</label>
+                    <select name="ownership_status" id="ownership_status"
+                        class="form-control" required
+                        style="border-color: #d0c7c7;">
+                        <option value="own" {% if vehicle.ownership_status ==
+                            'own' %}selected{% endif %}>Own</option>
+                        <option value="private" {% if vehicle.ownership_status
+                            == 'private' %}selected{% endif %}>Private</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end" style="padding-bottom: 50px;">
+            <a href="{{ url_for('vehicle_details', vehicle_id=vehicle.id) }}"
+                class="btn btn-danger"
+                style=" width: 150px;">Cancel</a>
+            <button type="submit" class="btn btn-success"
+                style=" width: 150px;">Update</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

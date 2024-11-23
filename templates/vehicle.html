@@ -1,9 +1,87 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>Vehicle</title>
+<link rel="stylesheet" href="static/vehicle.css">
+<title>Vehicles</title>
+{% endblock %}
+
+{% block mainheading %}
+Vehicles Directory
 {% endblock %}
 
 {% block maincontent %}
-this is vehicle
+<div>
+    <table style="padding-left: 5.5%;">
+        <form action="{{ url_for('vehicle_list_buttons') }}" method="post">
+            <td style="width:40%; padding-left: 85px;">
+                <input type="text" placeholder="Search Vehicle"
+                    style="width: 100%;">
+            </td>
+            <td style="width:10%;padding-left: 30px;padding-top:15px">
+                <button class="styled-button" name="button"
+                    value="filter_vehicle">
+                    <img src="/static/icons/filter-icon.png" alt="Icon"
+                        class="button-icon">
+                    Filter
+                </button>
+            </td>
+            <td style="padding-left: 380px;padding-top:15px">
+                <button class="styled-button" name="button" value="add_vehicle">
+                    <img src="/static/icons/add-icon.png" alt="Icon"
+                        class="button-icon">
+                    <div style="color:#007B7B">Add Vehicle</div>
+                </button>
+            </td>
+        </form>
+    </table>
+
+    <!-- Vehicles Table -->
+    <div style="padding: 5.5%;">
+        <table class="styled-table"
+            style="padding-left: 20px; width: 100%; border-collapse: separate; border-spacing: 0 10px;">
+            <thead>
+                <tr>
+                    <th>Registration Number</th>
+                    <th>Type</th>
+                    <th>Capacity (Kgs)</th>
+                    <th>Ownership Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehicle in vehicles %}
+                <tr
+                    data-url="{{ url_for('vehicle_details', vehicle_id=vehicle.id) }}"
+                    onclick="redirectToDetails(this)" style="cursor: pointer;">
+                    <td>{{ vehicle.registration_no }}</td>
+                    <td>{{ vehicle.vehicle_type }}</td>
+                    <td>{{ vehicle.capacity }}</td>
+                    <td>{{ vehicle.ownership_status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if pagination.has_prev %}
+        <a
+            href="{{ url_for('vehicle', page=pagination.prev_num) }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+
+        {% if pagination.has_next %}
+        <a href="{{ url_for('vehicle', page=pagination.next_num) }}">Next</a>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+        function redirectToDetails(row) {
+            const url = row.getAttribute('data-url');
+            window.location.href = url;
+        }
+    </script>
+
 {% endblock %}
