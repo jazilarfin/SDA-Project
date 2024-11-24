@@ -10,12 +10,41 @@
 {% endblock %}
 
 {% block maincontent %}
-<div class="container mt-4" >
+
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 100%;">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('orders') }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease; text-decoration: none;"
+                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Orders</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px;">Add
+                        Order</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+<div class="d-flex flex-column gap-4"  style="padding-top: 10px;">
     <form action="{{ url_for('add_order') }}" method="POST">
         
         <!-- Customer Details Section -->
-        <div class="card mb-4" style="width: 1200px;" >
-            <div class="card-header bg-primary text-white">
+        <div class="card mb-4"  >
+            <div class="card-header text-white" style="background-color: #007B7B;">
                 <h5 class="mb-0">Customer Details</h5>
             </div>
             <div class="card-body">
@@ -36,7 +65,7 @@
 
         <!-- Transportation Details Section -->
         <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header text-white" style="background-color: #007B7B;">
                 <h5 class="mb-0">Transportation Details</h5>
             </div>
             <div class="card-body">
@@ -61,7 +90,7 @@
 
         <!-- Item Details Section -->
         <div class="section card mb-4" id="item-details-container">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header text-white" style="background-color: #007B7B;">
                 <h5 class="mb-0">Item Details</h5>
             </div>
             <div class="item-details card-body" id="item-details-template">
@@ -133,26 +162,26 @@
             const newItemDetails = document.createElement('div');
             newItemDetails.classList.add('row', 'mt-2', 'ms-2');
             newItemDetails.innerHTML = `
-                <div class="item-details">
+                <div class="item-details card-body">
                     <div class="col-12 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Item ${itemCount}</h5>
                         <button type="button" class="btn btn-danger btn-sm delete-item-btn me-3">Delete Item</button>
                     </div>
                     <div class="mb-3">
                         <label for="brick_type_${itemCount}" class="form-label">Brick Type</label>
-                        <input type="text" name="brick_type_${itemCount}" id="brick_type" class="form-control" placeholder="Enter brick type" required style="width: 1165px;">
+                        <input type="text" name="brick_type_${itemCount}" id="brick_type" class="form-control" placeholder="Enter brick type" required style="width: 1210px;">
                     </div>
                     <div class="mb-3">
                         <label for="brand_${itemCount}" class="form-label">Brand</label>
-                        <input type="text" name="brand_${itemCount}" id="brand" class="form-control" placeholder="Enter brand" required style="width: 1165px;">
+                        <input type="text" name="brand_${itemCount}" id="brand" class="form-control" placeholder="Enter brand" required style="width: 1210px;">
                     </div>
                     <div class="mb-3">
                         <label for="quantity_${itemCount}" class="form-label">Quantity</label>
-                        <input type="number" name="quantity_${itemCount}" id="quantity" class="form-control" placeholder="Enter quantity" required style="width: 1165px;">
+                        <input type="number" name="quantity_${itemCount}" id="quantity" class="form-control" placeholder="Enter quantity" required style="width: 1210px;">
                     </div>
                     <div class="mb-3">
                         <label for="price_${itemCount}" class="form-label">Price</label>
-                        <input type="number" name="price_${itemCount}" id="price" class="form-control" placeholder="Enter price" required style="width: 1165px;">
+                        <input type="number" name="price_${itemCount}" id="price" class="form-control" placeholder="Enter price" required style="width: 1210px;">
                     </div>
                 </div>
             `;

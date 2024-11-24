@@ -4,16 +4,47 @@
     <!-- <link rel="stylesheet" href="static/add_orders.css">     -->
     <title>Order Details</title>
 {% endblock %}
-
+    
 {% block mainheading %}
     Order Details
-{% endblock %}
+{% endblock %} 
 
-{% block maincontent %}
-<div class="d-flex flex-column gap-4">
+{% block maincontent %}  
+
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 100%;">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('orders') }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease; text-decoration: none;"
+                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Orders</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; text-decoration: none;">Order
+                        Details</a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+  
+<div class="d-flex flex-column gap-4" style="padding-top: 10px;">
     <!-- Customer Details Section -->
     <div class="card mb-4" >
-        <div class="card-header bg-primary text-white">
+        <div class="card-header text-white" style="background-color: #007B7B;">
             <h5 class="mb-0">Customer Details</h5>
         </div>
         <div class="card-body">
@@ -38,7 +69,7 @@
 
     <!-- Transportation Details Section -->
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header text-white" style="background-color: #007B7B;">
             <h5 class="mb-0">Transportation Details</h5>
         </div>
         <div class="card-body">
@@ -71,7 +102,7 @@
 
     <!-- Item Details Section -->
     <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header text-white" style="background-color: #007B7B;">
             <h5 class="mb-0">Item Details</h5>
         </div>
         <div class="card-body">

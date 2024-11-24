@@ -319,6 +319,7 @@ def edit_vehicle(vehicle_id):
     return render_template('edit_vehicle.html', vehicle=vehicle)
 
 
+
 # Route to handle button clicks for the salesman list page
 @app.route('/salesman_list_buttons', methods=['POST'])
 def salesman_list_buttons():
