@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Brand Details</title>
+{% endblock %}
+
+{% block mainheading %}
+Brand Details
+{% endblock %}
+
+{% block maincontent %}
+<!-- Bootstrap Navigation Bar -->
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 925px;">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link text-black"
+                        href="{{ url_for('brand') }}"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease; text-decoration: none;"
+                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Brands</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; text-decoration: none;">Brand
+                        Details</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Brand Details Card -->
+<div class="container mt-4">
+    <div class="card" style="width: 900px;">
+        <div class="card-body">
+            <h4 class="card-title mb-4" style="color: #007b7b;">Brand
+                Information</h4>
+
+            <!-- Brand Name -->
+            <div class="mb-3">
+                <label class="form-label"
+                    style="margin-bottom: 5px;">Brand Name:</label>
+                <div
+                    style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #dcdcdc;">
+                    {{ brand.name }}
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div class="mb-3">
+                <label class="form-label"
+                    style="margin-bottom: 5px;">Location:</label>
+                <div
+                    style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #dcdcdc;">
+                    {{ brand.location }}
+                </div>
+            </div>
+
+            <!-- Principal Contact -->
+            <div class="mb-3">
+                <label class="form-label" style="margin-bottom: 5px;">Principal
+                    Contact:</label>
+                <div
+                    style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #dcdcdc;">
+                    {{ brand.principal_contact }}
+                </div>
+            </div>
+
+            <!-- Contact No. -->
+            <div class="mb-3">
+                <label class="form-label" style="margin-bottom: 5px;">Contact
+                    No.:</label>
+                <div
+                    style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #dcdcdc;">
+                    {{ brand.contact_no }}
+                </div>
+            </div>
+            <div>
+                <p>Brick Types Count: {{ brand.brick_types | length }}</p>
+            </div>
+            <!-- Debugging Brick Types -->
+            <div>
+                <pre>{{ brand.brick_types }}</pre>
+                <!-- This will print out the entire object/array -->
+            </div>
+
+            <!-- Brick Types -->
+            <div class="mb-3">
+                <label class="form-label" style="margin-bottom: 5px;">Brick
+                    Types:</label>
+                <div
+                    style="background-color: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #dcdcdc;">
+                    {% if brand.brick_types %}
+                    <ul>
+                        {% for brick in brand.brick_types %}
+                        <li>{{ brick.type_name }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No brick types available for this brand.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Edit Button -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('edit_brand', brand_id=brand.id) }}"
+                class="btn btn-primary" style="width: 250px;">Edit</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

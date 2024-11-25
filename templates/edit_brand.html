@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Edit Brand</title>
+{% endblock %}
+
+{% block mainheading %}
+Edit Brand
+{% endblock %}
+
+{% block maincontent %}
+<!-- Bootstrap Navigation Bar -->
+<nav class="navbar navbar-expand-lg"
+    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 925px;">
+    <div class="container-fluid d-flex align-items-center">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease;"
+                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Brand</a>
+                </li>
+                <li class="mx-1"
+                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                <li class="nav-item">
+                    <a class="nav-link text-black" href="#"
+                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px;">Edit
+                        Brand</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <form action="{{ url_for('edit_brand', brand_id=brand.id) }}"
+        method="POST">
+
+        <!-- Brand Details Section -->
+        <div class="card mb-4" style="width: 900px;">
+            <div class="card-body">
+                <!-- Brand Name -->
+                <div class="mb-3">
+                    <label for="brand_name" class="form-label"
+                        style="margin-bottom: 5px;">Brand Name</label>
+                    <input type="text" name="brand_name" id="brand_name"
+                        class="form-control" placeholder="Enter brand name"
+                        value="{{ brand.brand_name }}" required
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label"
+                        style="margin-bottom: 5px;">Location</label>
+                    <input type="text" name="location" id="location"
+                        class="form-control" placeholder="Enter brand location"
+                        value="{{ brand.location }}" required
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                </div>
+
+                <!-- Principal Contact -->
+                <div class="mb-3">
+                    <label for="principal_contact" class="form-label"
+                        style="margin-bottom: 5px;">Principal Contact</label>
+                    <input type="text" name="principal_contact"
+                        id="principal_contact" class="form-control"
+                        placeholder="Enter principal contact name"
+                        value="{{ brand.principal_contact }}" required
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                </div>
+
+                <!-- Contact No. -->
+                <div class="mb-3">
+                    <label for="contact_no" class="form-label"
+                        style="margin-bottom: 5px;">Contact No.</label>
+                    <input type="tel" name="contact_no" id="contact_no"
+                        class="form-control" placeholder="Enter contact number"
+                        value="{{ brand.contact_no }}" required
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                </div>
+
+                <!-- Brick Type -->
+                <div class="mb-3 d-flex align-items-center">
+                    <label for="brick_type" class="form-label"
+                        style="margin-bottom: 5px; margin-right: 10px;">Brick
+                        Type</label>
+                    <select name="brick_type" id="brick_type"
+                        class="form-control" onchange="handleBrickTypeChange()"
+                        style="background-color: white; border-color: #d0c7c7; width: 50%;">
+                        <option value="clay">Clay</option>
+                        <option value="concrete">Concrete</option>
+                        <option value="fly_ash">Fly Ash</option>
+                        <option value="others">Others</option>
+                    </select>
+                    <button type="button" class="btn ms-3" id="addBrickTypeBtn"
+                        style="width: 100px; background-color: #007b7b; color: white; transition: all 0.3s ease;">Add</button>
+                </div>
+
+                <!-- Custom Brick Type (Hidden by Default) -->
+                <div class="mb-3" id="custom_brick_type_container"
+                    style="display: none;">
+                    <label for="custom_brick_type" class="form-label"
+                        style="margin-bottom: 5px;">Specify Brick Type</label>
+                    <input type="text" name="custom_brick_type"
+                        id="custom_brick_type" class="form-control"
+                        placeholder="Enter custom brick type"
+                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+                </div>
+
+                <!-- List of Selected Brick Types -->
+                <div id="addedBrickTypes" style="margin-top: 5px;">
+                    {% for brick in brand.brick_types %}
+                    <div class="d-flex align-items-center"
+                        style="margin-left: 89px;">
+                        <div class="input-group"
+                            style="width: 56%; margin-bottom: 0;">
+                            <input type="text" class="form-control"
+                                value="{{ brick }}" readonly
+                                style="height: 30px;">
+                        </div>
+                        <button type="button" class="btn btn-sm ms-3"
+                            style="width: 100px; background-color: #007b7b; color: white; height: 30px;"
+                            onclick="this.parentElement.remove();">Remove</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end" style="padding-bottom: 50px;">
+            <a href="{{ url_for('brand') }}" class="btn btn-danger"
+                style="width: 150px;">Cancel</a>
+            <button type="submit" class="btn btn-success"
+                style="width: 150px;">Save</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // Add JavaScript functions for handling brick types here
+    {{ add_brick_type_js_script | safe }}
+</script>
+
+{% endblock %}

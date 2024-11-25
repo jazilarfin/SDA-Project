@@ -38,6 +38,42 @@ def sidebar_buttons():
 
 
 
+# Brand and BrickType Models
+class Brand(db.Model):
+    __tablename__ = 'brands'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(30), nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    contact_no = db.Column(db.String(12), unique=True, nullable=False)
+    principal_contact = db.Column(db.String(12), nullable=False)
+
+    # Relationship to BrickType
+    brick_types = db.relationship('BrickType', backref='brand', cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f"<Brand {self.name} - Location: {self.location}>"
+
+class BrickType(db.Model):
+    __tablename__ = 'brick_types'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    type_name = db.Column(db.String(50), nullable=False)
+    brand_id = db.Column(db.Integer, db.ForeignKey('brands.id'), nullable=False)  # Foreign key to Brand
+
+    # Enforce a unique constraint on type_name and brand_id
+    __table_args__ = (
+        db.UniqueConstraint('type_name', 'brand_id', name='unique_brick_type_per_brand'),
+    )
+
+
+    def __repr__(self):
+        return f"<BrickType {self.type_name} for Brand ID {self.brand_id}>"
+
+
+
+
+
 # Order and Item Models
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -402,18 +438,122 @@ def edit_salesman(salesman_id):
     # Render the form to edit the salesman with the existing data for a GET request
     return render_template('edit_salesman.html', salesman=salesman)
 
+
+# Route to handle button clicks for the brand list page
 @app.route('/brand_list_buttons', methods=['POST'])
 def brand_list_buttons():
-    button_value = request.form.get('button')
-    if button_value == 'add_brand':
-        return redirect(url_for('add_brand'))
-    return redirect(url_for('brand'))
+    button_value = request.form.get('button')  # Get the value of the button clicked from the form
+    if button_value == 'add_brand':  # If the "add_brand" button was clicked
+        return redirect(url_for('add_brand'))  # Redirect to the "add_brand" route
+    return redirect(url_for('brand'))  # If another button was clicked, redirect to the brand list page
+
+# Route to display the brand list page with pagination
+@app.route('/brand', methods=['GET'])
+def brand():
+    page = request.args.get('page', 1, type=int)  # Get the current page number from the URL query parameter
+    per_page = 5  # Number of brands to display per page
+    brands_paginated = Brand.query.paginate(page=page, per_page=per_page)  # Query the brands with pagination
+
+    # Render the brand list template and pass the paginated brands and pagination data
+    return render_template('brand.html', brands=brands_paginated.items, pagination=brands_paginated)
+
+# Route to display the details of a specific brand
+@app.route('/brand/<int:brand_id>', methods=['GET'])
+def brand_details(brand_id):
+    brand = Brand.query.get_or_404(brand_id)  # Fetch the brand by ID or return 404 if not found
+    
+    # Render the brand details template and pass the fetched brand data
+    return render_template('brand_details.html', brand=brand)
 
 
 
+# Route to handle adding a new brand (GET for form, POST for submission)
 @app.route('/add_brand', methods=['GET', 'POST'])
 def add_brand():
-    return render_template('add_brand.html')
+    if request.method == 'POST':  # If the form is submitted (POST request)
+        try:
+            # Get form data for the new brand
+            brand_name = request.form['brand_name']
+            location = request.form['location']
+            principal_contact = request.form['principal_contact']
+            contact_no = request.form['contact_no']
+            brick_types = request.form.getlist('brick_types')  # Get selected brick types
+
+            # Create a new Brand instance with the provided data
+            new_brand = Brand(
+                name=brand_name,
+                location=location,
+                principal_contact=principal_contact,
+                contact_no=contact_no
+            )
+
+            # Add the brand to the database and commit the transaction
+            db.session.add(new_brand)
+            db.session.commit()
+
+            print(f"New Brand ID: {new_brand.id}")
+            print(f"Brick Types Received: {brick_types}")
+
+
+
+            # Now add the brick types (if any)
+            for brick_type in brick_types:
+                new_brick_type = BrickType(
+                    type_name=brick_type,
+                    brand_id=new_brand.id  # Associate this brick type with the brand
+                )
+                db.session.add(new_brick_type)
+
+            db.session.commit()
+
+            flash("Brand and brick types added successfully!", "success")  # Flash a success message
+            return redirect(url_for('brand'))  # Redirect to the brand list page
+
+        except Exception as e:  # If there's an error while adding the brand
+            db.session.rollback()  # Rollback the database transaction
+            flash(f"Error adding brand: {e}", "danger")  # Flash an error message
+            return render_template('add_brand.html')  # Return the add brand form with error message
+
+    return render_template('add_brand.html')  # Render the form to add a brand (GET request)
+
+# Route to handle editing a specific brand (GET for form, POST for submission)
+@app.route('/edit_brand/<int:brand_id>', methods=['GET', 'POST'])
+def edit_brand(brand_id):
+    brand = Brand.query.get_or_404(brand_id)  # Fetch the brand by ID or return 404 if not found
+
+    if request.method == 'POST':  # If the form is submitted (POST request)
+        try:
+            # Update the brand details with the form data
+            brand.name = request.form['brand_name']
+            brand.location = request.form['location']
+            brand.principal_contact = request.form['principal_contact']
+            brand.contact_no = request.form['contact_no']
+            # Clear existing brick types and update new ones
+            brand.brick_types = []  # Clear existing brick types
+
+            # Get new brick types from the form
+            brick_types = request.form.getlist('brick_types')  # Get selected brick types
+
+            # Add new brick types for this brand
+            for brick_type in brick_types:
+                new_brick_type = BrickType(
+                    type_name=brick_type,
+                    brand_id=brand.id  # Associate this brick type with the brand
+                )
+                db.session.add(new_brick_type)
+
+            # Commit changes to the database
+            db.session.commit()
+
+            flash("Brand and brick types updated successfully!", "success")  # Flash a success message
+            return redirect(url_for('brand_details', brand_id=brand.id))  # Redirect to the brand details page
+
+        except Exception as e:  # If there's an error while updating the brand
+            db.session.rollback()  # Rollback the database transaction
+            flash(f"Error updating brand: {e}", "danger")  # Flash an error message
+
+    # Render the form to edit the brand with the existing data for a GET request
+    return render_template('edit_brand.html', brand=brand)
 
 if __name__ == '__main__':
     with app.app_context():

@@ -47,6 +47,7 @@ Add a Brand
                         class="form-control" placeholder="Enter brand name"
                         required
                         style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
+
                 </div>
 
                 <!-- Location -->
@@ -134,95 +135,130 @@ Add a Brand
             customBrickTypeContainer.style.display = 'none';
         }
     }
+document.getElementById('addBrickTypeBtn').addEventListener('click', function() {
+    const brickTypeSelect = document.getElementById('brick_type');
+    const customBrickTypeInput = document.getElementById('custom_brick_type');
+    const addedBrickTypesContainer = document.getElementById('addedBrickTypes');
 
-    document.getElementById('addBrickTypeBtn').addEventListener('click', function() {
-        const brickTypeSelect = document.getElementById('brick_type');
-        const customBrickTypeInput = document.getElementById('custom_brick_type');
-        const addedBrickTypesContainer = document.getElementById('addedBrickTypes');
+    let selectedBrickType = brickTypeSelect.value;
 
-        let selectedBrickType = brickTypeSelect.value;
+    // If "others" is selected, use the custom input value
+    if (selectedBrickType === 'others' && customBrickTypeInput.value.trim() !== '') {
+        selectedBrickType = customBrickTypeInput.value.trim();
+    }
 
-        // If "others" is selected, use the custom input value
-        if (selectedBrickType === 'others' && customBrickTypeInput.value.trim() !== '') {
-            selectedBrickType = customBrickTypeInput.value.trim();
-        }
+    if (!selectedBrickType) {
+        alert('Please select or enter a brick type.');
+        return;
+    }
 
-        // Only proceed if a valid brick type is selected or entered
-        if (selectedBrickType) {
-            // Create a new div to hold the selected brick type and the remove button
-            const brickTypeDiv = document.createElement('div');
-            brickTypeDiv.classList.add('d-flex', 'align-items-center'); // For spacing and alignment
+    // Check if the brick type is already added
+    const existingBrickTypes = [...addedBrickTypesContainer.getElementsByTagName('input')];
+    const isDuplicate = existingBrickTypes.some(input => input.value.toLowerCase() === selectedBrickType.toLowerCase());
 
-            // Apply a left margin to the added item field
-            brickTypeDiv.style.marginLeft = '89px';  // Adjust this value as needed
+    // If duplicate, show an alert and stop execution
+    if (isDuplicate) {
+        alert("This brick type is already added.");
+        return; // Prevent adding the brick type
+    }
 
-            // Create a div to wrap the input field for consistent styling
-            const brickTypeInputDiv = document.createElement('div');
-            brickTypeInputDiv.classList.add('input-group');
-            brickTypeInputDiv.style.width = "56%"; // Ensure it’s half the width of the form inputs
-            brickTypeInputDiv.style.marginBottom = '0'; // Reduce spacing
+    // Only proceed if a valid brick type is selected or entered
+    alert(selectedBrickType);
+    if (selectedBrickType) {
+        // Create a new div to hold the selected brick type and the remove button
+        const brickTypeDiv = document.createElement('div');
+        brickTypeDiv.classList.add('d-flex', 'align-items-center'); // For spacing and alignment
 
-            // Create an input-like field to display the brick type
-            const brickTypeInput = document.createElement('input');
-            brickTypeInput.classList.add('form-control');
-            brickTypeInput.type = 'text';
-            brickTypeInput.value = selectedBrickType.charAt(0).toUpperCase() + selectedBrickType.slice(1);
-            brickTypeInput.setAttribute('readonly', true); // Make it read-only to mimic an input
-            brickTypeInput.style.height = '30px'; // Reduce height of input
+        // Apply a left margin to the added item field
+        brickTypeDiv.style.marginLeft = '89px';  // Adjust this value as needed
 
-            // Create the Remove button with the same color as the navbar
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = 'Remove';
-            removeBtn.classList.add('btn', 'btn-sm', 'ms-3'); // Add some spacing after the input
-            removeBtn.style.backgroundColor = '#007b7b'; // Set background color to match navbar
-            removeBtn.style.color = 'white'; // Set text color to white
-            removeBtn.style.width = '100px'; // Ensure the width matches the Add button's width
-            removeBtn.style.height = '30px'; // Reduce height of remove button
-            removeBtn.style.marginTop = '10px'; // Add some space below the field
-            
-            // Hover effect for the remove button
-            removeBtn.addEventListener('mouseover', function() {
-                removeBtn.style.transform = 'scale(1.001)';
-                removeBtn.style.transition = 'all 0.3s ease';
-                removeBtn.style.backgroundColor = '#005f5f';
-            });
+        // Create a div to wrap the input field for consistent styling
+        const brickTypeInputDiv = document.createElement('div');
+        brickTypeInputDiv.classList.add('input-group');
+        brickTypeInputDiv.style.width = "56%"; // Ensure it’s half the width of the form inputs
+        brickTypeInputDiv.style.marginBottom = '0'; // Reduce spacing
 
-            removeBtn.addEventListener('mouseout', function() {
-                removeBtn.style.transform = 'scale(1)';
-                removeBtn.style.backgroundColor = '#007b7b';
-            });
+        // Create an input-like field to display the brick type
+        const brickTypeInput = document.createElement('input');
+        brickTypeInput.classList.add('form-control');
+        brickTypeInput.type = 'text';
+        brickTypeInput.value = selectedBrickType.charAt(0).toUpperCase() + selectedBrickType.slice(1);
+        brickTypeInput.setAttribute('readonly', true); // Make it read-only to mimic an input
+        brickTypeInput.style.height = '30px'; // Reduce height of input
 
-            removeBtn.addEventListener('click', function() {
-                addedBrickTypesContainer.removeChild(brickTypeDiv);
-            });
+        // Create the Remove button with the same color as the navbar
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.classList.add('btn', 'btn-sm', 'ms-3'); // Add some spacing after the input
+        removeBtn.style.backgroundColor = '#007b7b'; // Set background color to match navbar
+        removeBtn.style.color = 'white'; // Set text color to white
+        removeBtn.style.width = '100px'; // Ensure the width matches the Add button's width
+        removeBtn.style.height = '30px'; // Reduce height of remove button
+        removeBtn.style.marginTop = '10px'; // Add some space below the field
+        
+        // Hover effect for the remove button
+        removeBtn.addEventListener('mouseover', function() {
+            removeBtn.style.transform = 'scale(1.001)';
+            removeBtn.style.transition = 'all 0.3s ease';
+            removeBtn.style.backgroundColor = '#005f5f';
+        });
 
-            // Hover effect for the Add button
-            const addButton = document.getElementById('addBrickTypeBtn');
-            addButton.addEventListener('mouseover', function() {
-                addButton.style.transform = 'scale(1.001)';
-                addButton.style.transition = 'all 0.3s ease';
-                addButton.style.backgroundColor = '#005f5f';
-            });
+        removeBtn.addEventListener('mouseout', function() {
+            removeBtn.style.transform = 'scale(1)';
+            removeBtn.style.backgroundColor = '#007b7b';
+        });
 
-            addButton.addEventListener('mouseout', function() {
-                addButton.style.transform = 'scale(1)';
-                addButton.style.backgroundColor = '#007b7b';
-            });
+        removeBtn.addEventListener('click', function() {
+            addedBrickTypesContainer.removeChild(brickTypeDiv);
 
-            // Append the input field and remove button to the div
-            brickTypeInputDiv.appendChild(brickTypeInput);
-            brickTypeDiv.appendChild(brickTypeInputDiv);
-            brickTypeDiv.appendChild(removeBtn);
-
-            // Append the new div to the added brick types container
-            addedBrickTypesContainer.appendChild(brickTypeDiv);
-
-            // Clear the custom brick type input field if "others" was used
-            if (selectedBrickType === customBrickTypeInput.value.trim()) {
-                customBrickTypeInput.value = '';
+            // Also remove the hidden input for this brick type
+            const hiddenInput = document.getElementById(`brick_type_${selectedBrickType}`);
+            if (hiddenInput) {
+                hiddenInput.remove();
             }
+        });
+
+        // Hover effect for the Add button
+        const addButton = document.getElementById('addBrickTypeBtn');
+        addButton.addEventListener('mouseover', function() {
+            addButton.style.transform = 'scale(1.001)';
+            addButton.style.transition = 'all 0.3s ease';
+            addButton.style.backgroundColor = '#005f5f';
+        });
+
+        addButton.addEventListener('mouseout', function() {
+            addButton.style.transform = 'scale(1)';
+            addButton.style.backgroundColor = '#007b7b';
+        });
+
+        // Create hidden input to store the brick type value for form submission
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'brick_types'; // The name to match your server-side code
+        hiddenInput.value = selectedBrickType; // Set the value to the brick type
+
+        // Set an ID for the hidden input to allow removal
+        hiddenInput.id = `brick_type_${selectedBrickType}`;
+
+        // Append the input field and remove button to the div
+        brickTypeInputDiv.appendChild(brickTypeInput);
+        brickTypeDiv.appendChild(brickTypeInputDiv);
+        brickTypeDiv.appendChild(removeBtn);
+
+        // Append the new div to the added brick types container
+        addedBrickTypesContainer.appendChild(brickTypeDiv);
+
+        // Append the hidden input to the form
+        const form = document.querySelector('form');
+        form.appendChild(hiddenInput);
+
+        // Clear the custom brick type input field if "others" was used
+        if (selectedBrickType === customBrickTypeInput.value.trim()) {
+            customBrickTypeInput.value = '';
         }
-    });
+    }
+});
+
 </script>
 
 {% endblock %}
