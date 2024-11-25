@@ -69,9 +69,20 @@
                 <h5 class="mb-0">Transportation Details</h5>
             </div>
             <div class="card-body">
+                <!--
                 <div class="mb-3">
                     <label for="vehicle_reg_number" class="form-label">Vehicle Registration Number</label>
                     <input type="text" name="vehicle_reg_number" id="vehicle_reg_number" class="form-control" placeholder="Enter vehicle reg number" required>
+                </div> -->
+                <div class="mb-3">
+                    <label for="vehicle_reg_number" class="form-label">Vehicle Registration Number</label>
+                    <select name="vehicle_reg_number" id="vehicle_reg_number" class="form-control" required>
+                        <option value="" disabled selected>Select a vehicle</option>
+                        {% for vehicle in vehicles %}
+                        <option value="{{ vehicle.registration_no }}">{{ vehicle.registration_no }} - {{ vehicle.vehicle_type }}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- <small class="form-text text-muted">Choose from the existing vehicles or enter a new one.</small> -->
                 </div>
                 <div class="mb-3">
                     <label for="vehicle_rent" class="form-label">Vehicle Rent</label>
@@ -81,9 +92,19 @@
                     <label for="labor_cost" class="form-label">Labor Cost</label>
                     <input type="number" name="labor_cost" id="labor_cost" class="form-control" placeholder="Enter labor cost" required>
                 </div>
-                <div class="mb-3">
+                <!--<div class="mb-3">
                     <label for="salesman_name" class="form-label">Salesman Name</label>
                     <input type="text" name="salesman_name" id="salesman_name" class="form-control" placeholder="Enter salesman name" required>
+                </div> -->
+                <div class="mb-3">
+                    <label for="salesman_name" class="form-label">Vehicle Registration Number</label>
+                    <select name="salesman_name" id="salesman_name" class="form-control" required>
+                        <option value="" disabled selected>Select Salesman</option>
+                        {% for salesman in salesmen %}
+                        <option value="{{ salesman.name }}">{{ salesman.name }} </option>
+                        {% endfor %}
+                    </select>
+                    <!-- <small class="form-text text-muted">Choose from the existing vehicles or enter a new one.</small> -->
                 </div>
             </div>
         </div>
