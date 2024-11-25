@@ -139,9 +139,7 @@ def home():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/brand')
-def brand():
-    return render_template('brand.html')
+
 
 @app.route('/order_list_buttons', methods=['POST'])
 def orders_list_buttons():
