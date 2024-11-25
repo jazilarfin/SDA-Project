@@ -261,8 +261,8 @@ def add_order():
             db.session.rollback()
             flash(f"An error occurred: {e}", "danger")
             return render_template('add_order.html')
-
-    return render_template('add_order.html')
+    vehicles = Vehicle.query.all()
+    return render_template('add_order.html' , vehicles=vehicles)
 
 
 
