@@ -2,7 +2,7 @@
 
 {% block title %}
 <title>Edit Salesman</title>
-{% endblock %}   
+{% endblock %}
 
 {% block mainheading %}
 Edit Salesman
@@ -20,7 +20,7 @@ Edit Salesman
                         href="{{ url_for('salesman') }}"
                         style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease; text-decoration: none;"
                         onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
-                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Salesmen</a>
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Salesman</a>
                 </li>
                 <li class="mx-1"
                     style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
@@ -94,7 +94,7 @@ Edit Salesman
             </div>
         </div>
 
-        <!-- Submit Button -->
+        <!-- Update and Cancel Buttons -->
         <div class="text-end" style="padding-bottom: 50px;">
             <a href="{{ url_for('salesman_details', salesman_id=salesman.id) }}"
                 class="btn btn-danger" style="width: 150px;">Cancel</a>

@@ -3,7 +3,7 @@
 {% block title %}
 <title>Add Salesman</title>
 {% endblock %}
-   
+
 {% block mainheading %}
 Add New Salesman
 {% endblock %}
@@ -33,9 +33,6 @@ Add New Salesman
         </div>
     </div>
 </nav>
-
-
-
 
 <div class="container mt-4">
     <form action="{{ url_for('add_salesman') }}" method="POST">
@@ -91,11 +88,11 @@ Add New Salesman
             </div>
         </div>
 
-        <!-- Submit Button -->
+        <!-- Cancel and Submit Buttons -->
         <div class="text-end" style="padding-bottom: 50px;">
-            <button type="button" class="btn btn-danger" required
-                style="width: 150px;">Cancel</button>
-           <a href="{{ url_for('salesman') }}" class="btn btn-danger ms-2">Cancel</a>
+            <a href="{{ url_for('salesman') }}"
+                class="btn btn-danger ms-2" required
+                style="width: 150px;">Cancel</a>
             <button type="submit" class="btn btn-success" required
                 style="width: 150px;">Submit</button>
         </div>

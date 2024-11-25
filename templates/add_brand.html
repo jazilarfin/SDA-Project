@@ -16,7 +16,7 @@ Add a Brand
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav d-flex align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link text-black" href="#"
+                    <a class="nav-link text-black" href="{{ url_for('brand') }}"
                         style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease;"
                         onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
                         onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Brand</a>
@@ -118,7 +118,9 @@ Add a Brand
         <div class="text-end" style="padding-bottom: 50px;">
             <!--<button type="button" class="btn btn-danger" required
                 style="width: 150px;">Cancel</button>-->
-            <a href="{{ url_for('brand') }}" class="btn btn-danger ms-2">Cancel</a>
+            <a href="{{ url_for('brand') }}" class="btn btn-danger ms-2"
+                required
+                style="width: 150px;">Cancel</a>
             <button type="submit" class="btn btn-success" required
                 style="width: 150px;">Submit</button>
         </div>

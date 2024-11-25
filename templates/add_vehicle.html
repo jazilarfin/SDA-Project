@@ -100,7 +100,9 @@ Add New Vehicle
         <div class="text-end" style="padding-bottom: 50px;">
             <!--<button type="button" class="btn btn-danger" required
                 style=" width: 150px;">Cancel</button>-->
-            <a href="{{ url_for('vehicle') }}" class="btn btn-danger ms-2">Cancel</a>
+            <a href="{{ url_for('vehicle') }}" class="btn btn-danger ms-2"
+                required
+                style="width: 150px;">Cancel</a>
             <button type="submit" class="btn btn-success" required
                 style=" width: 150px;">Submit</button>
         </div>
