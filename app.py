@@ -470,12 +470,19 @@ def brand_details(brand_id):
 def add_brand():
     if request.method == 'POST':  # If the form is submitted (POST request)
         try:
+
+            print(request.form)  # Logs all submitted form data
+            print(request.form.getlist('brick_types'))  # Logs brick types
+
             # Get form data for the new brand
             brand_name = request.form['brand_name']
             location = request.form['location']
             principal_contact = request.form['principal_contact']
             contact_no = request.form['contact_no']
-            brick_types = request.form.getlist('brick_types')  # Get selected brick types
+            brick_types = request.form.getlist('brick_types[]')
+
+            print(request.form.getlist('brick_types[]'))
+
 
             # Create a new Brand instance with the provided data
             new_brand = Brand(
@@ -492,12 +499,12 @@ def add_brand():
             print(f"New Brand ID: {new_brand.id}")
             print(f"Brick Types Received: {brick_types}")
 
-
+            
 
             # Now add the brick types (if any)
             for brick_type in brick_types:
                 new_brick_type = BrickType(
-                    type_name=brick_type,
+                    type_name=brick_type.strip(),
                     brand_id=new_brand.id  # Associate this brick type with the brand
                 )
                 db.session.add(new_brick_type)
@@ -514,44 +521,50 @@ def add_brand():
 
     return render_template('add_brand.html')  # Render the form to add a brand (GET request)
 
-# Route to handle editing a specific brand (GET for form, POST for submission)
+
 @app.route('/edit_brand/<int:brand_id>', methods=['GET', 'POST'])
 def edit_brand(brand_id):
-    brand = Brand.query.get_or_404(brand_id)  # Fetch the brand by ID or return 404 if not found
+    # Fetch the brand details by ID
+    brand = Brand.query.get(brand_id)
+    if not brand:
+        return "Brand not found", 404
 
-    if request.method == 'POST':  # If the form is submitted (POST request)
-        try:
-            # Update the brand details with the form data
-            brand.name = request.form['brand_name']
-            brand.location = request.form['location']
-            brand.principal_contact = request.form['principal_contact']
-            brand.contact_no = request.form['contact_no']
-            # Clear existing brick types and update new ones
-            brand.brick_types = []  # Clear existing brick types
+    if request.method == 'POST':
+        # Update brand details
+        brand.brand_name = request.form['brand_name']
+        brand.location = request.form['location']
+        brand.principal_contact = request.form['principal_contact']
+        brand.contact_no = request.form['contact_no']
 
-            # Get new brick types from the form
-            brick_types = request.form.getlist('brick_types')  # Get selected brick types
+        # Get the new list of brick types from the form
+        new_brick_types = set(request.form.getlist('brick_types[]'))  # Ensure uniqueness
 
-            # Add new brick types for this brand
-            for brick_type in brick_types:
-                new_brick_type = BrickType(
-                    type_name=brick_type,
-                    brand_id=brand.id  # Associate this brick type with the brand
-                )
-                db.session.add(new_brick_type)
+        # Fetch current brick types from the database
+        existing_brick_types = set(brick.type_name for brick in brand.brick_types)
 
-            # Commit changes to the database
-            db.session.commit()
+        # Determine which brick types to add and remove
+        to_add = new_brick_types - existing_brick_types
+        to_remove = existing_brick_types - new_brick_types
 
-            flash("Brand and brick types updated successfully!", "success")  # Flash a success message
-            return redirect(url_for('brand_details', brand_id=brand.id))  # Redirect to the brand details page
+        # Remove old brick types
+        for brick_type in to_remove:
+            brick_to_remove = BrickType.query.filter_by(brand_id=brand.id, type_name=brick_type).first()
+            if brick_to_remove:
+                db.session.delete(brick_to_remove)
 
-        except Exception as e:  # If there's an error while updating the brand
-            db.session.rollback()  # Rollback the database transaction
-            flash(f"Error updating brand: {e}", "danger")  # Flash an error message
+        # Add new brick types
+        for brick_type in to_add:
+            new_brick = BrickType(brand_id=brand.id, type_name=brick_type)
+            db.session.add(new_brick)
 
-    # Render the form to edit the brand with the existing data for a GET request
+        # Save changes to the database
+        db.session.commit()
+
+        return redirect(url_for('brand_details', brand_id=brand.id))  # Redirect to the brand details page
+
+    # Render the edit form with pre-filled values
     return render_template('edit_brand.html', brand=brand)
+
 
 if __name__ == '__main__':
     with app.app_context():

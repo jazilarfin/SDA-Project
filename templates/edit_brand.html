@@ -41,117 +41,147 @@ Edit Brand
     </div>
 </nav>
 
-<div class="container mt-4">
-    <form action="{{ url_for('edit_brand', brand_id=brand.id) }}"
-        method="POST">
+<form action="{{ url_for('edit_brand', brand_id=brand.id) }}" method="POST">
+    <!-- Brand Details Section -->
+    <div class="mb-3">
+        <label for="brand_name" class="form-label">Brand Name</label>
+        <input type="text" name="brand_name" id="brand_name"
+            class="form-control" value="{{ brand.name }}"
+            placeholder="Enter brand name" required>
+    </div>
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="location" id="location" class="form-control"
+            value="{{ brand.location }}" placeholder="Enter location" required>
+    </div>
+    <div class="mb-3">
+        <label for="principal_contact" class="form-label">Principal
+            Contact</label>
+        <input type="text" name="principal_contact" id="principal_contact"
+            class="form-control" value="{{ brand.principal_contact }}"
+            placeholder="Enter contact" required>
+    </div>
+    <div class="mb-3">
+        <label for="contact_no" class="form-label">Contact No.</label>
+        <input type="text" name="contact_no" id="contact_no"
+            class="form-control" value="{{ brand.contact_no }}"
+            placeholder="Enter contact number" required>
+    </div>
 
-        <!-- Brand Details Section -->
-        <div class="card mb-4" style="width: 900px;">
-            <div class="card-body">
-                <!-- Brand Name -->
-                <div class="mb-3">
-                    <label for="brand_name" class="form-label"
-                        style="margin-bottom: 5px;">Brand Name</label>
-                    <input type="text" name="brand_name" id="brand_name"
-                        class="form-control" placeholder="Enter brand name"
-                        value="{{ brand.name }}" required
-                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
-                </div>
+    <!-- Brick Types Section -->
+    <div class="mb-3 d-flex align-items-center">
+        <label for="brick_type" class="form-label me-3">Brick Type</label>
+        <select id="brick_type" class="form-select">
+            <option value="clay">Clay</option>
+            <option value="concrete">Concrete</option>
+            <option value="fly_ash">Fly Ash</option>
+            <option value="others">Others</option>
+        </select>
+        <button type="button" id="addBrickTypeBtn"
+            class="btn btn-primary ms-3">Add</button>
+    </div>
 
-                <!-- Location -->
-                <div class="mb-3">
-                    <label for="location" class="form-label"
-                        style="margin-bottom: 5px;">Location</label>
-                    <input type="text" name="location" id="location"
-                        class="form-control" placeholder="Enter brand location"
-                        value="{{ brand.location }}" required
-                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
-                </div>
+    <!-- Custom Brick Type Field -->
+    <div id="customBrickTypeContainer" class="mb-3" style="display: none;">
+        <label for="customBrickType" class="form-label">Specify Brick
+            Type</label>
+        <input type="text" id="customBrickType" class="form-control"
+            placeholder="Enter custom brick type">
+    </div>
 
-                <!-- Principal Contact -->
-                <div class="mb-3">
-                    <label for="principal_contact" class="form-label"
-                        style="margin-bottom: 5px;">Principal Contact</label>
-                    <input type="text" name="principal_contact"
-                        id="principal_contact" class="form-control"
-                        placeholder="Enter principal contact name"
-                        value="{{ brand.principal_contact }}" required
-                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
-                </div>
-
-                <!-- Contact No. -->
-                <div class="mb-3">
-                    <label for="contact_no" class="form-label"
-                        style="margin-bottom: 5px;">Contact No.</label>
-                    <input type="tel" name="contact_no" id="contact_no"
-                        class="form-control" placeholder="Enter contact number"
-                        value="{{ brand.contact_no }}" required
-                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
-                </div>
-
-                <!-- Brick Type -->
-                <div class="mb-3 d-flex align-items-center">
-                    <label for="brick_type" class="form-label"
-                        style="margin-bottom: 5px; margin-right: 10px;">Brick
-                        Type</label>
-                    <select name="brick_type" id="brick_type"
-                        class="form-control" onchange="handleBrickTypeChange()"
-                        style="background-color: white; border-color: #d0c7c7; width: 50%;">
-                        <option value="clay">Clay</option>
-                        <option value="concrete">Concrete</option>
-                        <option value="fly_ash">Fly Ash</option>
-                        <option value="others">Others</option>
-                    </select>
-                    <button type="button" class="btn ms-3" id="addBrickTypeBtn"
-                        style="width: 100px; background-color: #007b7b; color: white; transition: all 0.3s ease;">Add</button>
-                </div>
-
-                <!-- Custom Brick Type (Hidden by Default) -->
-                <div class="mb-3" id="custom_brick_type_container"
-                    style="display: none;">
-                    <label for="custom_brick_type" class="form-label"
-                        style="margin-bottom: 5px;">Specify Brick Type</label>
-                    <input type="text" name="custom_brick_type"
-                        id="custom_brick_type" class="form-control"
-                        placeholder="Enter custom brick type"
-                        style="background-color: white; margin-top: 0;border-color: #d0c7c7;">
-                </div>
-
-                <!-- List of Selected Brick Types -->
-                <div id="addedBrickTypes" style="margin-top: 5px;">
-                    {% for brick in brand.brick_types %}
-                    <div class="d-flex align-items-center"
-                        style="margin-left: 89px;">
-                        <div class="input-group"
-                            style="width: 56%; margin-bottom: 0;">
-                            <input type="text" class="form-control"
-                                value="{{ brick }}" readonly
-                                style="height: 30px;">
-                        </div>
-                        <button type="button" class="btn btn-sm ms-3"
-                            style="width: 100px; background-color: #007b7b; color: white; height: 30px;"
-                            onclick="this.parentElement.remove();">Remove</button>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+    <!-- List of Selected Brick Types -->
+    <div id="selectedBrickTypesContainer">
+        {% for brick_type in brand.brick_types %}
+        <div class="d-flex align-items-center mb-2">
+            <span class="me-3">{{ brick_type.type_name }}</span>
+            <button type="button"
+                class="btn btn-sm btn-danger removeBrickTypeBtn">Remove</button>
+            <input type="hidden" name="brick_types[]"
+                value="{{ brick_type.type_name }}">
         </div>
+        {% endfor %}
+    </div>
 
-        <!-- Submit Button -->
-        <div class="text-end" style="padding-bottom: 50px;">
-            <a href="{{ url_for('brand') }}" class="btn btn-danger"
-                style="width: 150px;">Cancel</a>
-
-            <button type="submit" class="btn btn-success"
-                style="width: 150px;">Save</button>
-        </div>
-
-    </form>
-</div>
+    <!-- Submit Button -->
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </div>
+</form>
 
 <script>
-    // Add JavaScript functions for handling brick types here
-    {{ add_brick_type_js_script | safe }}
-</script>
+    // Event listener for adding a brick type
+    document.getElementById('addBrickTypeBtn').addEventListener('click', function () {
+        const brickTypeSelect = document.getElementById('brick_type');
+        const customBrickTypeInput = document.getElementById('customBrickType');
+        const selectedBrickTypesContainer = document.getElementById('selectedBrickTypesContainer');
 
+        let brickType = brickTypeSelect.value;
+
+        // If "others" is selected, use the custom brick type input value
+        if (brickType === 'others') {
+            brickType = customBrickTypeInput.value.trim();
+            if (!brickType) {
+                alert('Please enter a custom brick type.');
+                return;
+            }
+        }
+
+        // Check for duplicates
+        const existingBrickTypes = Array.from(selectedBrickTypesContainer.querySelectorAll('input[name="brick_types[]"]'))
+            .map(input => input.value.toLowerCase());
+        if (existingBrickTypes.includes(brickType.toLowerCase())) {
+            alert('This brick type is already added.');
+            return;
+        }
+
+        // Create hidden input to hold the brick type value
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'brick_types[]'; // Array-like input name
+        hiddenInput.value = brickType;
+
+        // Create a display element with a remove button
+        const brickTypeDiv = document.createElement('div');
+        brickTypeDiv.classList.add('d-flex', 'align-items-center', 'mb-2');
+
+        const brickTypeLabel = document.createElement('span');
+        brickTypeLabel.textContent = brickType;
+        brickTypeLabel.classList.add('me-3');
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = 'Remove';
+        removeBtn.classList.add('btn', 'btn-sm', 'btn-danger');
+        removeBtn.addEventListener('click', function () {
+            selectedBrickTypesContainer.removeChild(brickTypeDiv);
+        });
+
+        brickTypeDiv.appendChild(brickTypeLabel);
+        brickTypeDiv.appendChild(removeBtn);
+        brickTypeDiv.appendChild(hiddenInput);
+
+        selectedBrickTypesContainer.appendChild(brickTypeDiv);
+
+        // Clear the custom brick type input if used
+        if (brickType === customBrickTypeInput.value) {
+            customBrickTypeInput.value = '';
+        }
+    });
+
+    // Event delegation for remove button on dynamically added brick types
+    document.getElementById('selectedBrickTypesContainer').addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('removeBrickTypeBtn')) {
+            const brickTypeDiv = e.target.closest('div');
+            document.getElementById('selectedBrickTypesContainer').removeChild(brickTypeDiv);
+        }
+    });
+
+    // Attach remove button functionality to the already present brick types
+    document.querySelectorAll('.removeBrickTypeBtn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const brickTypeDiv = button.closest('div');
+            document.getElementById('selectedBrickTypesContainer').removeChild(brickTypeDiv);
+        });
+    });
+</script>
 {% endblock %}

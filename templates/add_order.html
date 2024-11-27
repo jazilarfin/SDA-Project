@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <link rel="stylesheet" href="static/add_orders.css">
-    <title>Add Order</title>
+<link rel="stylesheet" href="static/add_orders.css">
+<title>Add Order</title>
 {% endblock %}
 
 {% block mainheading %}
-    Add New Order
+Add New Order
 {% endblock %}
 
 {% block maincontent %}
@@ -35,37 +35,41 @@
     </div>
 </nav>
 
-
-
-
-
-<div class="d-flex flex-column gap-4"  style="padding-top: 10px;">
+<div class="d-flex flex-column gap-4" style="padding-top: 10px;">
     <form action="{{ url_for('add_order') }}" method="POST">
-        
+
         <!-- Customer Details Section -->
-        <div class="card mb-4"  >
-            <div class="card-header text-white" style="background-color: #007B7B;">
+        <div class="card mb-4">
+            <div class="card-header text-white"
+                style="background-color: #007B7B;">
                 <h5 class="mb-0">Customer Details</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
                     <label for="customer_name" class="form-label">Name</label>
-                    <input type="text" name="customer_name" id="customer_name" class="form-control" placeholder="Enter customer name" required>
+                    <input type="text" name="customer_name" id="customer_name"
+                        class="form-control" placeholder="Enter customer name"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="contact" class="form-label">Contact</label>
-                    <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter contact number" required>
+                    <input type="text" name="contact" id="contact"
+                        class="form-control" placeholder="Enter contact number"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address</label>
-                    <textarea name="address" id="address" class="form-control" placeholder="Enter customer address" required></textarea>
+                    <textarea name="address" id="address" class="form-control"
+                        placeholder="Enter customer address"
+                        required></textarea>
                 </div>
             </div>
         </div>
 
         <!-- Transportation Details Section -->
         <div class="card mb-4">
-            <div class="card-header text-white" style="background-color: #007B7B;">
+            <div class="card-header text-white"
+                style="background-color: #007B7B;">
                 <h5 class="mb-0">Transportation Details</h5>
             </div>
             <div class="card-body">
@@ -75,33 +79,47 @@
                     <input type="text" name="vehicle_reg_number" id="vehicle_reg_number" class="form-control" placeholder="Enter vehicle reg number" required>
                 </div> -->
                 <div class="mb-3">
-                    <label for="vehicle_reg_number" class="form-label">Vehicle Registration Number</label>
-                    <select name="vehicle_reg_number" id="vehicle_reg_number" class="form-control" required>
-                        <option value="" disabled selected>Select a vehicle</option>
+                    <label for="vehicle_reg_number" class="form-label">Vehicle
+                        Registration Number</label>
+                    <select name="vehicle_reg_number" id="vehicle_reg_number"
+                        class="form-control" required>
+                        <option value disabled selected>Select a
+                            vehicle</option>
                         {% for vehicle in vehicles %}
-                        <option value="{{ vehicle.registration_no }}">{{ vehicle.registration_no }} - {{ vehicle.vehicle_type }}</option>
+                        <option value="{{ vehicle.registration_no }}">{{
+                            vehicle.registration_no }} - {{ vehicle.vehicle_type
+                            }}</option>
                         {% endfor %}
                     </select>
                     <!-- <small class="form-text text-muted">Choose from the existing vehicles or enter a new one.</small> -->
                 </div>
                 <div class="mb-3">
-                    <label for="vehicle_rent" class="form-label">Vehicle Rent</label>
-                    <input type="number" name="vehicle_rent" id="vehicle_rent" class="form-control" placeholder="Enter vehicle rent" required>
+                    <label for="vehicle_rent" class="form-label">Vehicle
+                        Rent</label>
+                    <input type="number" name="vehicle_rent" id="vehicle_rent"
+                        class="form-control" placeholder="Enter vehicle rent"
+                        required>
                 </div>
                 <div class="mb-3">
-                    <label for="labor_cost" class="form-label">Labor Cost</label>
-                    <input type="number" name="labor_cost" id="labor_cost" class="form-control" placeholder="Enter labor cost" required>
+                    <label for="labor_cost" class="form-label">Labor
+                        Cost</label>
+                    <input type="number" name="labor_cost" id="labor_cost"
+                        class="form-control" placeholder="Enter labor cost"
+                        required>
                 </div>
                 <!--<div class="mb-3">
                     <label for="salesman_name" class="form-label">Salesman Name</label>
                     <input type="text" name="salesman_name" id="salesman_name" class="form-control" placeholder="Enter salesman name" required>
                 </div> -->
                 <div class="mb-3">
-                    <label for="salesman_name" class="form-label">Vehicle Registration Number</label>
-                    <select name="salesman_name" id="salesman_name" class="form-control" required>
-                        <option value="" disabled selected>Select Salesman</option>
+                    <label for="salesman_name" class="form-label">Vehicle
+                        Registration Number</label>
+                    <select name="salesman_name" id="salesman_name"
+                        class="form-control" required>
+                        <option value disabled selected>Select Salesman</option>
                         {% for salesman in salesmen %}
-                        <option value="{{ salesman.name }}">{{ salesman.name }} </option>
+                        <option value="{{ salesman.name }}">{{ salesman.name }}
+                        </option>
                         {% endfor %}
                     </select>
                     <!-- <small class="form-text text-muted">Choose from the existing vehicles or enter a new one.</small> -->
@@ -111,41 +129,60 @@
 
         <!-- Item Details Section -->
         <div class="section card mb-4" id="item-details-container">
-            <div class="card-header text-white" style="background-color: #007B7B;">
+            <div class="card-header text-white"
+                style="background-color: #007B7B;">
                 <h5 class="mb-0">Item Details</h5>
             </div>
             <div class="item-details card-body" id="item-details-template">
                 <h5>Item 1</h5>
+
                 <div class="mb-3">
-                    <label for="brick_type_1" class="form-label">Brick Type</label>
-                    <input type="text" name="brick_type" id="brick_type" class="form-control" placeholder="Enter brick type" required>
+                    <label for="brick_type_1" class="form-label">Brick
+                        Type</label>
+                    <select name="brick_type_1" id="brick_type_1"
+                        class="form-control" required>
+                        <option value disabled selected>Select Brick
+                            Type</option>
+                        {% for vehicle in vehicles %}
+                        <option value="{{ vehicle.registration_no }}">{{
+                            vehicle.registration_no }} - {{ vehicle.vehicle_type
+                            }}</option>
+                        {% endfor %}
+                    </select>
+
                 </div>
                 <div class="mb-3">
                     <label for="brand_1" class="form-label">Brand</label>
-                    <input type="text" name="brand" id="brand" class="form-control" placeholder="Enter brand" required>
+                    <input type="text" name="brand" id="brand"
+                        class="form-control" placeholder="Enter brand" required>
                 </div>
                 <div class="mb-3">
                     <label for="quantity_1" class="form-label">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" placeholder="Enter quantity" required>
+                    <input type="number" name="quantity" id="quantity"
+                        class="form-control" placeholder="Enter quantity"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="price_1" class="form-label">Price</label>
-                    <input type="number" name="price" id="price" class="form-control" placeholder="Enter price" required>
+                    <input type="number" name="price" id="price"
+                        class="form-control" placeholder="Enter price" required>
                 </div>
             </div>
         </div>
-        
+
         <div class="mb-3">
-            <button type="button" class="btn btn-secondary" id="add-item-btn">Add More Items</button>
+            <button type="button" class="btn btn-secondary"
+                id="add-item-btn">Add More Items</button>
         </div>
 
         <!-- Submit Button -->
         <div class="text-end" style="padding-bottom: 50px;">
             <!-- <button type="submit" class="btn btn-danger" >Cancel</button> -->
-            <button type="submit" class="btn btn-success" >Punch Order</button>
-            <a href="{{ url_for('orders') }}" class="btn btn-danger ms-2">Cancel</a>
+            <button type="submit" class="btn btn-success">Punch Order</button>
+            <a href="{{ url_for('orders') }}"
+                class="btn btn-danger ms-2">Cancel</a>
         </div>
-        
+
     </form>
 </div>
 {% endblock %}
@@ -230,4 +267,3 @@
     });
 </script>
 {% endblock %}
-
