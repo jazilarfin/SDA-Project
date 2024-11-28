@@ -35,8 +35,9 @@ Brand Details
 </nav>
 
 <!-- Brand Details Card -->
-<div class="container mt-4">
-    <div class="card" style="width: 900px;">
+<div class="container-fluid" required style="margin-top: 30px;">
+    <div class="border border-secondary rounded p-4"
+        style="max-width: 100%; min-width: 300px;max-width: 900px; border-color: silver !important;">
         <div class="card-body">
             <h4 class="card-title mb-4" style="color: #007b7b;">Brand
                 Information</h4>
@@ -101,12 +102,13 @@ Brand Details
 
         </div>
 
-        <!-- Edit Button -->
-        <div class="text-center mt-4">
-            <a href="{{ url_for('edit_brand', brand_id=brand.id) }}"
-                class="btn btn-primary" style="width: 250px;">Edit</a>
-        </div>
     </div>
+</div>
+<!-- Edit Button -->
+<div class="mt-4">
+    <a href="{{ url_for('edit_brand', brand_id=brand.id) }}"
+        class="btn btn-primary"
+        style="width: 200px; margin-top: 0px;margin-left: 350px; margin-bottom: 20px">Edit</a>
 </div>
 
 {% endblock %}

@@ -1,95 +1,77 @@
-{% extends "base.html" %}
+<div class="container-fluid" required style="margin-top: 30px;">
+    <div class="border border-secondary rounded p-4"
+        style="max-width: 100%; min-width: 300px; max-width: 900px; border-color: silver !important;">
+        <form id="brandForm" action="{{ url_for('add_brand') }}" method="POST">
+            <!-- Brand Details Section -->
+            <div class="mb-3">
+                <label for="brand_name" class="form-label">Brand Name</label>
+                <input type="text" name="brand_name" id="brand_name"
+                    class="form-control" placeholder="Enter brand name"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="location" id="location"
+                    class="form-control" placeholder="Enter location" required>
+            </div>
+            <div class="mb-3">
+                <label for="principal_contact" class="form-label">Principal
+                    Contact</label>
+                <input type="text" name="principal_contact"
+                    id="principal_contact" class="form-control"
+                    placeholder="Enter contact" required>
+            </div>
+            <div class="mb-3">
+                <label for="contact_no" class="form-label">Contact No.</label>
+                <input type="text" name="contact_no" id="contact_no"
+                    class="form-control" placeholder="Enter contact number"
+                    required>
+            </div>
 
-{% block title %}
-<title>Add Brand</title>
-{% endblock %}
+            <!-- Brick Types Section -->
+            <div class="mb-3 d-flex align-items-center">
+                <label for="brick_type" class="form-label me-3">Brick
+                    Type</label>
+                <select id="brick_type" class="form-select"
+                    style="min-width: 200px;">
+                    <option value="clay">Clay</option>
+                    <option value="concrete">Concrete</option>
+                    <option value="fly_ash">Fly Ash</option>
+                    <option value="others">Others</option>
+                </select>
+                <button type="button" id="addBrickTypeBtn"
+                    class="btn btn-primary ms-3">Add</button>
+            </div>
 
-{% block mainheading %}
-Add a Brand
-{% endblock %}
+            <!-- Custom Brick Type Field -->
+            <div id="customBrickTypeContainer" class="mb-3"
+                style="display: none;">
+                <label for="customBrickType" class="form-label">Specify Brick
+                    Type</label>
+                <input type="text" id="customBrickType" class="form-control"
+                    placeholder="Enter custom brick type">
+            </div>
 
-{% block maincontent %}
-<!-- Bootstrap Navigation Bar -->
-<nav class="navbar navbar-expand-lg"
-    style="background-color: #007b7b; border-radius: 10px; padding: 5px 15px; height: 45px; width: 925px;">
-    <div class="container-fluid d-flex align-items-center">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav d-flex align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link text-black" href="{{ url_for('brand') }}"
-                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px; transition: all 0.3s ease;"
-                        onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.color='white';"
-                        onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Brand</a>
-                </li>
-                <li class="mx-1"
-                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
-                <li class="nav-item">
-                    <a class="nav-link text-black" href="#"
-                        style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px;">Add
-                        a Brand</a>
-                </li>
-            </ul>
-        </div>
+            <!-- List of Selected Brick Types -->
+            <div id="selectedBrickTypesContainer"
+                class="border border-secondary rounded p-3"
+                style="background-color: #f9f9f9; margin-top: 15px;">
+                <p style="margin: 0; font-weight: bold;">Selected Brick
+                    Types:</p>
+                <ul id="brickTypesList"
+                    style="list-style-type: none; padding: 0; margin: 10px 0;">
+                    <!-- Dynamically Added Brick Types Will Appear Here -->
+                </ul>
+            </div>
+
+        </form>
     </div>
-</nav>
+</div>
 
-<div
-    style="border: 2px solid silver; border-radius: 10px; padding: 20px; margin-left: 10px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 900px;">
-    <form action="{{ url_for('add_brand') }}" method="POST">
-        <!-- Brand Details Section -->
-        <div class="mb-3">
-            <label for="brand_name" class="form-label">Brand Name</label>
-            <input type="text" name="brand_name" id="brand_name"
-                class="form-control" placeholder="Enter brand name" required>
-        </div>
-        <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" name="location" id="location"
-                class="form-control"
-                placeholder="Enter location" required>
-        </div>
-        <div class="mb-3">
-            <label for="principal_contact" class="form-label">Principal
-                Contact</label>
-            <input type="text" name="principal_contact" id="principal_contact"
-                class="form-control" placeholder="Enter contact" required>
-        </div>
-        <div class="mb-3">
-            <label for="contact_no" class="form-label">Contact No.</label>
-            <input type="text" name="contact_no" id="contact_no"
-                class="form-control" placeholder="Enter contact number"
-                required>
-        </div>
-
-        <!-- Brick Types Section -->
-        <div class="mb-3 d-flex align-items-center">
-            <label for="brick_type" class="form-label me-3">Brick Type</label>
-            <select id="brick_type" class="form-select">
-                <option value="clay">Clay</option>
-                <option value="concrete">Concrete</option>
-                <option value="fly_ash">Fly Ash</option>
-                <option value="others">Others</option>
-            </select>
-            <button type="button" id="addBrickTypeBtn"
-                class="btn btn-primary ms-3">Add</button>
-        </div>
-
-        <!-- Custom Brick Type Field -->
-        <div id="customBrickTypeContainer" class="mb-3" style="display: none;">
-            <label for="customBrickType" class="form-label">Specify Brick
-                Type</label>
-            <input type="text" id="customBrickType" class="form-control"
-                placeholder="Enter custom brick type">
-        </div>
-
-        <!-- List of Selected Brick Types -->
-        <div id="selectedBrickTypesContainer"></div>
-
-        <!-- Submit Button -->
-        <div class="mt-4">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </div>
-    </form>
+<!-- Submit Button -->
+<div class="mt-4">
+    <button type="submit" class="btn btn-success" form="brandForm" required
+        style="width: 200px; margin-left: 350px; margin-bottom: 20px;">Submit</button>
 </div>
 
 <script>
@@ -124,17 +106,23 @@ Add a Brand
         hiddenInput.value = brickType;
 
         // Create a display element with a remove button
-        const brickTypeDiv = document.createElement('div');
-        brickTypeDiv.classList.add('d-flex', 'align-items-center', 'mb-2');
+        const brickTypeDiv = document.createElement('li');
+        brickTypeDiv.style.display = 'flex';
+        brickTypeDiv.style.alignItems = 'center';
+        brickTypeDiv.style.marginBottom = '5px';
+        brickTypeDiv.style.padding = '5px';
+        brickTypeDiv.style.border = '1px solid #ddd';
+        brickTypeDiv.style.borderRadius = '4px';
 
         const brickTypeLabel = document.createElement('span');
         brickTypeLabel.textContent = brickType;
-        brickTypeLabel.classList.add('me-3');
+        brickTypeLabel.style.flexGrow = '1';
 
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
         removeBtn.textContent = 'Remove';
         removeBtn.classList.add('btn', 'btn-sm', 'btn-danger');
+        removeBtn.style.marginLeft = '10px';
         removeBtn.addEventListener('click', function () {
             selectedBrickTypesContainer.removeChild(brickTypeDiv);
         });
@@ -161,5 +149,3 @@ Add a Brand
         }
     });
 </script>
-
-{% endblock %}

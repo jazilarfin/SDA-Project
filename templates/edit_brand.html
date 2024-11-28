@@ -41,73 +41,87 @@ Edit Brand
     </div>
 </nav>
 
-<form action="{{ url_for('edit_brand', brand_id=brand.id) }}" method="POST">
-    <!-- Brand Details Section -->
-    <div class="mb-3">
-        <label for="brand_name" class="form-label">Brand Name</label>
-        <input type="text" name="brand_name" id="brand_name"
-            class="form-control" value="{{ brand.name }}"
-            placeholder="Enter brand name" required>
-    </div>
-    <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" name="location" id="location" class="form-control"
-            value="{{ brand.location }}" placeholder="Enter location" required>
-    </div>
-    <div class="mb-3">
-        <label for="principal_contact" class="form-label">Principal
-            Contact</label>
-        <input type="text" name="principal_contact" id="principal_contact"
-            class="form-control" value="{{ brand.principal_contact }}"
-            placeholder="Enter contact" required>
-    </div>
-    <div class="mb-3">
-        <label for="contact_no" class="form-label">Contact No.</label>
-        <input type="text" name="contact_no" id="contact_no"
-            class="form-control" value="{{ brand.contact_no }}"
-            placeholder="Enter contact number" required>
-    </div>
+<div class="container-fluid" required
+    style="margin-top: 30px">
+    <div class="border border-secondary rounded p-4"
+        style="max-width: 100%; min-width: 300px;max-width: 900px; border-color: silver !important;">
+        <form id="brandForm"
+            action="{{ url_for('edit_brand', brand_id=brand.id) }}"
+            method="POST">
+            <!-- Brand Details Section -->
+            <div class="mb-3">
+                <label for="brand_name" class="form-label">Brand Name</label>
+                <input type="text" name="brand_name" id="brand_name"
+                    class="form-control" value="{{ brand.name }}"
+                    placeholder="Enter brand name" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" name="location" id="location"
+                    class="form-control"
+                    value="{{ brand.location }}" placeholder="Enter location"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="principal_contact" class="form-label">Principal
+                    Contact</label>
+                <input type="text" name="principal_contact"
+                    id="principal_contact"
+                    class="form-control" value="{{ brand.principal_contact }}"
+                    placeholder="Enter contact" required>
+            </div>
+            <div class="mb-3">
+                <label for="contact_no" class="form-label">Contact No.</label>
+                <input type="text" name="contact_no" id="contact_no"
+                    class="form-control" value="{{ brand.contact_no }}"
+                    placeholder="Enter contact number" required>
+            </div>
 
-    <!-- Brick Types Section -->
-    <div class="mb-3 d-flex align-items-center">
-        <label for="brick_type" class="form-label me-3">Brick Type</label>
-        <select id="brick_type" class="form-select">
-            <option value="clay">Clay</option>
-            <option value="concrete">Concrete</option>
-            <option value="fly_ash">Fly Ash</option>
-            <option value="others">Others</option>
-        </select>
-        <button type="button" id="addBrickTypeBtn"
-            class="btn btn-primary ms-3">Add</button>
-    </div>
+            <!-- Brick Types Section -->
+            <div class="mb-3 d-flex align-items-center">
+                <label for="brick_type" class="form-label me-3">Brick
+                    Type</label>
+                <select id="brick_type" class="form-select">
+                    <option value="clay">Clay</option>
+                    <option value="concrete">Concrete</option>
+                    <option value="fly_ash">Fly Ash</option>
+                    <option value="others">Others</option>
+                </select>
+                <button type="button" id="addBrickTypeBtn"
+                    class="btn btn-primary ms-3">Add</button>
+            </div>
 
-    <!-- Custom Brick Type Field -->
-    <div id="customBrickTypeContainer" class="mb-3" style="display: none;">
-        <label for="customBrickType" class="form-label">Specify Brick
-            Type</label>
-        <input type="text" id="customBrickType" class="form-control"
-            placeholder="Enter custom brick type">
-    </div>
+            <!-- Custom Brick Type Field -->
+            <div id="customBrickTypeContainer" class="mb-3"
+                style="display: none;">
+                <label for="customBrickType" class="form-label">Specify Brick
+                    Type</label>
+                <input type="text" id="customBrickType" class="form-control"
+                    placeholder="Enter custom brick type">
+            </div>
 
-    <!-- List of Selected Brick Types -->
-    <div id="selectedBrickTypesContainer">
-        {% for brick_type in brand.brick_types %}
-        <div class="d-flex align-items-center mb-2">
-            <span class="me-3">{{ brick_type.type_name }}</span>
-            <button type="button"
-                class="btn btn-sm btn-danger removeBrickTypeBtn">Remove</button>
-            <input type="hidden" name="brick_types[]"
-                value="{{ brick_type.type_name }}">
-        </div>
-        {% endfor %}
-    </div>
+            <!-- List of Selected Brick Types -->
+            <div id="selectedBrickTypesContainer">
+                {% for brick_type in brand.brick_types %}
+                <div class="d-flex align-items-center mb-2">
+                    <span class="me-3">{{ brick_type.type_name }}</span>
+                    <button type="button"
+                        class="btn btn-sm btn-danger removeBrickTypeBtn">Remove</button>
+                    <input type="hidden" name="brick_types[]"
+                        value="{{ brick_type.type_name }}">
+                </div>
+                {% endfor %}
+            </div>
 
-    <!-- Submit Button -->
-    <div class="mt-4">
-        <button type="submit" class="btn btn-success">Save Changes</button>
+        </form>
     </div>
-</form>
-
+</div>
+<!-- Submit Button -->
+<div class="mt-4">
+    <button type="submit" class="btn btn-success" form="brandForm" required
+        style="width: 200px; margin-left: 350px;  margin-bottom: 20px">Save
+        Changes</button>
+</div>
 <script>
     // Event listener for adding a brick type
     document.getElementById('addBrickTypeBtn').addEventListener('click', function () {
