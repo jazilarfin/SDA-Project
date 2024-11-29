@@ -12,12 +12,20 @@ app.secret_key = os.urandom(24)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db = SQLAlchemy(app)
 
+#Basic Routes
+@app.route('/')
+def home():
+    return render_template('index.html')
 
+    
 @app.route('/signin_button', methods=['POST'])
 def signin_button():
     # Handle the button click here
     return redirect(url_for('dashboard'))
-
+    
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/sidebar_buttons', methods=['POST'])
 def sidebar_buttons():
@@ -36,7 +44,7 @@ def sidebar_buttons():
         return redirect(url_for('home'))
     
 
-
+#All Classes
 
 # Brand and BrickType Models
 class Brand(db.Model):
@@ -131,18 +139,8 @@ class Salesman(db.Model):
         return f"<Salesman {self.name}: Contact No. {self.contact_no}, CNIC {self.cnic}>"
 
 
-@app.route('/')
-def home():
-    return render_template('index.html')
 
-
-
-
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html')
-
-
+#All routes
 
 @app.route('/order_list_buttons', methods=['POST'])
 def orders_list_buttons():
@@ -267,9 +265,6 @@ def add_order():
 
 
 
-
-
-
 # Route to handle button clicks for the vehicle list page
 @app.route('/vehicle_list_buttons', methods=['POST'])
 def vehicle_list_buttons():
@@ -303,7 +298,7 @@ def add_vehicle():
         try:
             # Get form data for the new vehicle
             registration_no = request.form['vehicle_reg_number']
-            vehicle_type = request.form['vehicle_type']
+    Vehicle vehicle_type = request.form['vehicle_type']
             capacity = int(request.form['vehicle_capacity'])  # Convert capacity to integer
             ownership_status = request.form['ownership_status']
 
@@ -524,7 +519,7 @@ def add_brand():
 
     return render_template('add_brand.html')  # Render the form to add a brand (GET request)
 
-
+# Route to handle editing a specific brands (GET for form, POST for submission)
 @app.route('/edit_brand/<int:brand_id>', methods=['GET', 'POST'])
 def edit_brand(brand_id):
     # Fetch the brand details by ID
