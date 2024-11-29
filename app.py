@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24)
-app.secret_key = 'SDA'
+
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -134,6 +134,9 @@ class Salesman(db.Model):
 @app.route('/')
 def home():
     return render_template('index.html')
+
+
+
 
 @app.route('/dashboard')
 def dashboard():

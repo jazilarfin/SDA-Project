@@ -22,7 +22,7 @@ Edit Brand
                         onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Brand</a>
                 </li>
                 <li class="mx-1"
-                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                    style="color: white; padding-bottom: 5px; font-size: 40px; font-weight: 300;">&gt;</li>
                 <li class="nav-item">
                     <a class="nav-link text-black"
                         href="{{ url_for('brand_details', brand_id=brand.id) }}"
@@ -30,7 +30,7 @@ Edit Brand
                         Details</a>
                 </li>
                 <li class="mx-1"
-                    style="color: white;padding-bottom: 5px; font-size: 40px; font-weight:300">&gt;</li>
+                    style="color: white; padding-bottom: 5px; font-size: 40px; font-weight: 300;">&gt;</li>
                 <li class="nav-item">
                     <a class="nav-link text-black" href="#"
                         style="background-color: white; color: black; border-radius: 5px; padding: 5px 15px; height: 35px; line-height: 25px;">Edit
@@ -41,10 +41,9 @@ Edit Brand
     </div>
 </nav>
 
-<div class="container-fluid" required
-    style="margin-top: 30px">
+<div class="container-fluid" style="margin-top: 30px;">
     <div class="border border-secondary rounded p-4"
-        style="max-width: 100%; min-width: 300px;max-width: 900px; border-color: silver !important;">
+        style="max-width: 100%; min-width: 300px; max-width: 900px; border-color: silver !important;">
         <form id="brandForm"
             action="{{ url_for('edit_brand', brand_id=brand.id) }}"
             method="POST">
@@ -58,9 +57,8 @@ Edit Brand
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
                 <input type="text" name="location" id="location"
-                    class="form-control"
-                    value="{{ brand.location }}" placeholder="Enter location"
-                    required>
+                    class="form-control" value="{{ brand.location }}"
+                    placeholder="Enter location" required>
             </div>
             <div class="mb-3">
                 <label for="principal_contact" class="form-label">Principal
@@ -81,7 +79,8 @@ Edit Brand
             <div class="mb-3 d-flex align-items-center">
                 <label for="brick_type" class="form-label me-3">Brick
                     Type</label>
-                <select id="brick_type" class="form-select">
+                <select id="brick_type" class="form-select"
+                    style="min-width: 200px;">
                     <option value="clay">Clay</option>
                     <option value="concrete">Concrete</option>
                     <option value="fly_ash">Fly Ash</option>
@@ -101,10 +100,16 @@ Edit Brand
             </div>
 
             <!-- List of Selected Brick Types -->
-            <div id="selectedBrickTypesContainer">
+            <div id="selectedBrickTypesContainer"
+                class="border border-secondary rounded p-3"
+                style="background-color: #f9f9f9; margin-top: 15px;">
+                <p style="margin: 0; font-weight: bold;">Selected Brick
+                    Types:</p>
                 {% for brick_type in brand.brick_types %}
-                <div class="d-flex align-items-center mb-2">
-                    <span class="me-3">{{ brick_type.type_name }}</span>
+                <div class="d-flex align-items-center mb-2"
+                    style="padding: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    <span class="me-3" style="flex-grow: 1;">{{
+                        brick_type.type_name }}</span>
                     <button type="button"
                         class="btn btn-sm btn-danger removeBrickTypeBtn">Remove</button>
                     <input type="hidden" name="brick_types[]"
@@ -112,16 +117,17 @@ Edit Brand
                 </div>
                 {% endfor %}
             </div>
-
         </form>
     </div>
 </div>
+
 <!-- Submit Button -->
 <div class="mt-4">
-    <button type="submit" class="btn btn-success" form="brandForm" required
-        style="width: 200px; margin-left: 350px;  margin-bottom: 20px">Save
+    <button type="submit" class="btn btn-success" form="brandForm"
+        style="width: 200px; margin-bottom: 20px; margin-left: 350px;">Save
         Changes</button>
 </div>
+
 <script>
     // Event listener for adding a brick type
     document.getElementById('addBrickTypeBtn').addEventListener('click', function () {
@@ -151,16 +157,18 @@ Edit Brand
         // Create hidden input to hold the brick type value
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
-        hiddenInput.name = 'brick_types[]'; // Array-like input name
+        hiddenInput.name = 'brick_types[]';
         hiddenInput.value = brickType;
 
         // Create a display element with a remove button
         const brickTypeDiv = document.createElement('div');
         brickTypeDiv.classList.add('d-flex', 'align-items-center', 'mb-2');
+        brickTypeDiv.style.cssText = 'padding: 5px; border: 1px solid #ddd; border-radius: 4px;';
 
         const brickTypeLabel = document.createElement('span');
         brickTypeLabel.textContent = brickType;
         brickTypeLabel.classList.add('me-3');
+        brickTypeLabel.style.flexGrow = '1';
 
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
@@ -176,26 +184,39 @@ Edit Brand
 
         selectedBrickTypesContainer.appendChild(brickTypeDiv);
 
-        // Clear the custom brick type input if used
         if (brickType === customBrickTypeInput.value) {
             customBrickTypeInput.value = '';
         }
     });
 
-    // Event delegation for remove button on dynamically added brick types
-    document.getElementById('selectedBrickTypesContainer').addEventListener('click', function (e) {
-        if (e.target && e.target.classList.contains('removeBrickTypeBtn')) {
-            const brickTypeDiv = e.target.closest('div');
-            document.getElementById('selectedBrickTypesContainer').removeChild(brickTypeDiv);
+    // Check if no brick types are selected
+    document.getElementById('brandForm').addEventListener('submit', function (event) {
+        const selectedBrickTypes = document.querySelectorAll('input[name="brick_types[]"]');
+        
+        
+        if (selectedBrickTypes.length === 0) {
+            event.preventDefault(); // Prevent form submission
+            alert('Please add at least one brick type.');
         }
     });
 
-    // Attach remove button functionality to the already present brick types
+    // Pre-attaching remove functionality
     document.querySelectorAll('.removeBrickTypeBtn').forEach(function (button) {
         button.addEventListener('click', function () {
             const brickTypeDiv = button.closest('div');
             document.getElementById('selectedBrickTypesContainer').removeChild(brickTypeDiv);
         });
     });
+
+    // Show/hide the custom brick type input field
+    document.getElementById('brick_type').addEventListener('change', function () {
+        const customBrickTypeContainer = document.getElementById('customBrickTypeContainer');
+        if (this.value === 'others') {
+            customBrickTypeContainer.style.display = 'block';
+        } else {
+            customBrickTypeContainer.style.display = 'none';
+        }
+    });
+
 </script>
 {% endblock %}
