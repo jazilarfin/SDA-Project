@@ -1,0 +1,18 @@
+.container {
+  margin-top: -20px; /* Moves the elements upward */
+}
+
+.custom-card {
+  width: 500px; /* Increased width */
+  height: 90px; /* Reduced height */
+  background-color: #e8f6f8;
+  border: 1px solid #00796b;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex; /* Ensures content aligns properly */
+  align-items: left; /* Centers content vertically */
+}
+
+.card-body {
+  padding: 10px; /* Adjusted padding for smaller height */
+}

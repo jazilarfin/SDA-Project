@@ -1,15 +1,30 @@
 {% extends "base.html" %}
 
 {% block title %}
-    <title>Dashboard</title>
+<link rel="stylesheet" href="static/dashboard.css">
+<title>Dashboard</title>
 {% endblock %}
 
-
-
-
-{% block mainheading %}      
+{% block mainheading %}
 Dashboard
 {% endblock %}
 {% block maincontent %}
-                This is dashboard
+<div class="container  d-flex justify-content-between">
+    <!-- Net Income -->
+    <div class="card custom-card">
+        <div class="card-body">
+            <p class="text-muted mb-1">Net Income</p>
+            <h5 class="fw-bold">$18,784.00</h5>
+        </div>
+    </div>
+
+    <!-- Expected Income -->
+    <div class="card custom-card">
+        <div class="card-body">
+            <p class="text-muted mb-1">Expected Income</p>
+            <h5 class="fw-bold">$25,635.00</h5>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
