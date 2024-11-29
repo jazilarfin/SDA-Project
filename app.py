@@ -13,6 +13,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db = SQLAlchemy(app)
 
 #Basic Routes
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -79,9 +80,6 @@ class BrickType(db.Model):
         return f"<BrickType {self.type_name} for Brand ID {self.brand_id}>"
 
 
-
-
-
 # Order and Item Models
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -140,8 +138,8 @@ class Salesman(db.Model):
 
 
 
-#All routes
-
+#Order Routes
+# Route to handle button clicks for the order list page
 @app.route('/order_list_buttons', methods=['POST'])
 def orders_list_buttons():
     button_pressed = request.form['button']
@@ -150,7 +148,7 @@ def orders_list_buttons():
     else:
         return redirect(url_for('orders'))
     
-
+# Route to display the Order list page with pagination
 @app.route('/orders', methods=['GET'])
 def orders():
     page = request.args.get('page', 1, type=int)  # Get the current page number, default is 1
@@ -162,13 +160,13 @@ def orders():
     return render_template('orders.html', orders=orders_paginated.items, pagination=orders_paginated)
 
 
-
+# Route to display the details of a specific order
 @app.route('/order/<int:order_id>', methods=['GET'])
 def order_details(order_id):
     order = Order.query.get_or_404(order_id)
     return render_template('order_details.html', order=order)
 
-
+# Route to handle editing a specific brands (GET for form)
 @app.route('/edit_order/<int:order_id>', methods=['GET'])
 def edit_order(order_id):
     order = Order.query.get(order_id)  # Fetch the order by ID
@@ -177,7 +175,7 @@ def edit_order(order_id):
         return redirect(url_for('orders'))
     return render_template('edit_order.html', order=order)
 
-
+# Route to handle editing a specific Order (POST for submission)
 @app.route('/edit_order/<int:order_id>', methods=['POST'])
 def edit_order_submit(order_id):
     order = Order.query.get(order_id)
@@ -208,7 +206,7 @@ def edit_order_submit(order_id):
 
 
 
-
+# Route to handle adding a new order (GET for form, POST for submission)
 @app.route('/add_order', methods=['GET', 'POST'])
 def add_order():
     if request.method == 'POST':
@@ -263,7 +261,7 @@ def add_order():
     vehicles = Vehicle.query.all()
     return render_template('add_order.html' , vehicles=vehicles)
 
-
+#Vehicle routes
 
 # Route to handle button clicks for the vehicle list page
 @app.route('/vehicle_list_buttons', methods=['POST'])
@@ -350,7 +348,7 @@ def edit_vehicle(vehicle_id):
     # Render the form to edit the vehicle with the existing data for a GET request
     return render_template('edit_vehicle.html', vehicle=vehicle)
 
-
+#Salesman routes
 
 # Route to handle button clicks for the salesman list page
 @app.route('/salesman_list_buttons', methods=['POST'])
@@ -434,6 +432,7 @@ def edit_salesman(salesman_id):
     # Render the form to edit the salesman with the existing data for a GET request
     return render_template('edit_salesman.html', salesman=salesman)
 
+#Brand Routes
 
 # Route to handle button clicks for the brand list page
 @app.route('/brand_list_buttons', methods=['POST'])
